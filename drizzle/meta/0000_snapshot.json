@@ -1,0 +1,223 @@
+{
+  "id": "ff0cf38d-55f4-4b7a-b7f0-9a8e1f403677",
+  "prevId": "00000000-0000-0000-0000-000000000000",
+  "version": "5",
+  "dialect": "pg",
+  "tables": {
+    "order": {
+      "name": "order",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "store": {
+          "name": "store",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {
+        "order_store_index": {
+          "name": "order_store_index",
+          "columns": [
+            "store"
+          ],
+          "isUnique": false
+        }
+      },
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
+    "order_item": {
+      "name": "order_item",
+      "schema": "",
+      "columns": {
+        "order_id": {
+          "name": "order_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "type": {
+          "name": "type",
+          "type": "pizza_type",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "size": {
+          "name": "size",
+          "type": "pizza_size",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {
+        "order_item_type_index": {
+          "name": "order_item_type_index",
+          "columns": [
+            "type"
+          ],
+          "isUnique": false
+        },
+        "order_item_size_index": {
+          "name": "order_item_size_index",
+          "columns": [
+            "size"
+          ],
+          "isUnique": false
+        }
+      },
+      "foreignKeys": {
+        "order_item_order_id_order_id_fk": {
+          "name": "order_item_order_id_order_id_fk",
+          "tableFrom": "order_item",
+          "tableTo": "order",
+          "schemaTo": "public",
+          "columnsFrom": [
+            "order_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "cascade"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
+    "pricing": {
+      "name": "pricing",
+      "schema": "",
+      "columns": {
+        "type": {
+          "name": "type",
+          "type": "pizza_type",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "size": {
+          "name": "size",
+          "type": "pizza_size",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "price": {
+          "name": "price",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {
+        "pricing_type_size_pk": {
+          "name": "pricing_type_size_pk",
+          "columns": [
+            "type",
+            "size"
+          ]
+        }
+      },
+      "uniqueConstraints": {}
+    },
+    "review": {
+      "name": "review",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "sentiment": {
+          "name": "sentiment",
+          "type": "review_sentiment",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "store": {
+          "name": "store",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "message": {
+          "name": "message",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {
+        "review_created_at_index": {
+          "name": "review_created_at_index",
+          "columns": [
+            "created_at"
+          ],
+          "isUnique": false
+        }
+      },
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    }
+  },
+  "enums": {
+    "pizza_size": {
+      "name": "pizza_size",
+      "values": {
+        "S": "S",
+        "M": "M",
+        "L": "L"
+      }
+    },
+    "pizza_type": {
+      "name": "pizza_type",
+      "values": {
+        "Cheese": "Cheese",
+        "Pepperoni": "Pepperoni",
+        "Deluxe": "Deluxe",
+        "Hawaiian": "Hawaiian",
+        "Meatlovers": "Meatlovers"
+      }
+    },
+    "review_sentiment": {
+      "name": "review_sentiment",
+      "values": {
+        "delighted": "delighted",
+        "happy": "happy",
+        "sad": "sad",
+        "angry": "angry"
+      }
+    }
+  },
+  "schemas": {},
+  "_meta": {
+    "columns": {},
+    "schemas": {},
+    "tables": {}
+  }
+}
