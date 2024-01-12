@@ -26,7 +26,7 @@
 
 	let sizes: Selected<PizzaSize>[];
 	let types: Selected<PizzaType>[];
-	let value: DateRange | undefined;
+	let value: DateRange;
 
 	$: if (value?.end && value?.start) {
 		range = {
@@ -36,98 +36,119 @@
 	}
 </script>
 
-<DateRangePicker bind:value />
+<div class="flex flex-row flex-wrap gap-4 justify-center w-full">
+	<DateRangePicker bind:value />
 
-<Select
-	placeholder="Select pizza sizes"
-	icon={Ruler}
-	bind:selected={sizes}
-	options={[
-		{
-			label: 'Small',
-			value: 'S',
-		},
-		{
-			label: 'Medium',
-			value: 'M',
-		},
-		{
-			label: 'Large',
-			value: 'L',
-		},
-	]}
-/>
+	<Select
+		placeholder="Select pizza sizes"
+		icon={Ruler}
+		bind:selected={sizes}
+		options={[
+			{
+				label: 'Small',
+				value: 'S',
+			},
+			{
+				label: 'Medium',
+				value: 'M',
+			},
+			{
+				label: 'Large',
+				value: 'L',
+			},
+		]}
+	/>
 
-<Select
-	placeholder="Select pizza types"
-	icon={Pizza}
-	bind:selected={types}
-	options={[
-		{
-			label: 'Cheese',
-			value: 'Cheese',
-		},
-		{
-			label: 'Pepperoni',
-			value: 'Pepperoni',
-		},
-		{
-			label: 'Deluxe',
-			value: 'Deluxe',
-		},
-		{
-			label: 'Hawaiian',
-			value: 'Hawaiian',
-		},
-		{
-			label: 'Meatlovers',
-			value: 'Meatlovers',
-		},
-	]}
-/>
-
-<div style="width: 400px;">
-	<Chart
-		data={trpc.reviewsBySentiment.query({
-			range,
-		})}
-		type="pie"
-		dataset="Reviews by sentiment"
-		label={d => d.sentiment}
-		value={d => d.count}
+	<Select
+		placeholder="Select pizza types"
+		icon={Pizza}
+		bind:selected={types}
+		options={[
+			{
+				label: 'Cheese',
+				value: 'Cheese',
+			},
+			{
+				label: 'Pepperoni',
+				value: 'Pepperoni',
+			},
+			{
+				label: 'Deluxe',
+				value: 'Deluxe',
+			},
+			{
+				label: 'Hawaiian',
+				value: 'Hawaiian',
+			},
+			{
+				label: 'Meatlovers',
+				value: 'Meatlovers',
+			},
+		]}
 	/>
 </div>
 
-<div style="width: 400px;">
-	<Chart
-		data={trpc.ordersByStore.query({
-			range,
-			pizzaSize: sizes?.length ? sizes.map(s => s.value) : undefined,
-			pizzaType: types?.length ? types.map(s => s.value) : undefined,
-		})}
-		type="bar"
-		dataset="Orders by store"
-		label={d => d.store}
-		value={d => d.count}
-	/>
-</div>
+<div class="dashboard overflow-hidden">
+	<div
+		id="rev"
+		class="p-3 justify-center place-items-center flex flex-row text-4xl bg-dark-4 rounded-3xl gap-4"
+	>
+		<span> Revenue </span>
 
-{#await revenue}
-	loading...
-{:then revenue}
-	<div>
-		Total revenue: {revenue}
+		<div class="bg-background/50 rounded-xl p-3 font-bold">
+			{#await revenue}
+				loading...
+			{:then revenue}
+				${revenue}
+			{/await}
+		</div>
 	</div>
-{/await}
 
-<div style="width: 400px;">
-	<Chart
-		data={trpc.revenueByMonth.query({
-			range,
-		})}
-		type="line"
-		dataset="Revenue by month"
-		label={d => month(d.month)}
-		value={d => d.revenue}
-	/>
+	<div class="grid lg:grid-cols-3 gap-4 w-full">
+		<div id="pie" class="h-full bg-dark-4 rounded-3xl p-8 lg:col-span-1">
+			<Chart
+				data={trpc.reviewsBySentiment.query({
+					range,
+				})}
+				type="pie"
+				dataset="Reviews by sentiment"
+				label={d => d.sentiment}
+				value={d => d.count}
+			/>
+		</div>
+
+		<div id="ord" class="h-full bg-dark-4 rounded-3xl p-8 lg:col-span-2">
+			<Chart
+				data={trpc.ordersByStore.query({
+					range,
+					pizzaSize: sizes?.length ? sizes.map(s => s.value) : undefined,
+					pizzaType: types?.length ? types.map(s => s.value) : undefined,
+				})}
+				type="bar"
+				dataset="Orders by store"
+				label={d => d.store}
+				value={d => d.count}
+				hideLegend
+			/>
+		</div>
+	</div>
+
+	<div id="mon" class="w-full h-full bg-dark-4 rounded-3xl p-8">
+		<Chart
+			data={trpc.revenueByMonth.query({
+				range,
+			})}
+			type="line"
+			dataset="Revenue by month"
+			label={d => month(d.month)}
+			value={d => d.revenue}
+			hideLegend
+		/>
+	</div>
 </div>
+
+<style>
+	.dashboard {
+		@apply flex flex-col gap-4;
+	}
+</style>

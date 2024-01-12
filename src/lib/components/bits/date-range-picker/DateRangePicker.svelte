@@ -10,10 +10,10 @@
 </script>
 
 <DateRangePicker.Root bind:value weekdayFormat="short" fixedWeeks>
-	<div class="flex w-full max-w-[380px] flex-col gap-1.5">
+	<div class="flex flex-grow flex-col gap-1.5">
 		<DateRangePicker.Input
 			let:segments
-			class="flex h-input w-full max-w-[380px] select-none items-center rounded-input border border-border-input bg-background p-3 text-sm tracking-[0.01em] text-muted-foreground focus-within:border-border-input-hover focus-within:shadow-date-field-focus hover:border-border-input-hover"
+			class="flex h-input w-full select-none items-center rounded-input border border-border-input bg-background p-3 text-sm tracking-[0.01em] text-muted-foreground focus-within:border-border-input-hover focus-within:shadow-date-field-focus hover:border-border-input-hover"
 		>
 			{#each segments.start as { part, value }}
 				<div class="inline-block select-none">

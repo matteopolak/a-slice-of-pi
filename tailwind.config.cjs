@@ -51,7 +51,8 @@ export default {
 			fontFamily: {
 				sans: ["Inter", ...fontFamily.sans],
 				mono: ["Source Code Pro", ...fontFamily.mono],
-				alt: ["Courier", ...fontFamily.sans]
+				alt: ["Courier", ...fontFamily.sans],
+				morn: ["Morn DemiBold", ...fontFamily.sans]
 			},
 			fontSize: {
 				xxs: "10px"

@@ -1,10 +1,19 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;0,700;0,900;1,400;1,500;1,700;1,900&display=swap');
+
+@font-face {
+	font-family: 'Morn DemiBold';
+	src: url('/fonts/morn-demibold.ttf') format('truetype');
+	font-weight: 600;
+}
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer base {
 	:root {
-		/* Colors */
+		font-family: Roboto, sans-serif;
+
 		--background: 0 0% 100%;
 		--foreground: 0 0% 9%;
 		--foreground-alt: 0 0% 32%;
@@ -22,10 +31,8 @@
 		--accent-foreground: 204 80% 16%;
 		--destructive: 347 77% 50%;
 
-		/* black */
 		--constrast: 0 0% 0%;
 
-		/* Shadows */
 		--shadow-mini: 0px 1px 0px 1px rgba(0, 0, 0, 0.04);
 		--shadow-mini-inset: 0px 1px 0px 0px rgba(0, 0, 0, 0.04) inset;
 		--shadow-popover: 0px 7px 12px 3px hsla(var(--dark-10));
@@ -36,7 +43,6 @@
 	}
 
 	.dark {
-		/* Colors */
 		--background: 0 0% 9%;
 		--foreground: 0 0% 100%;
 		--foreground-alt: 0 0% 100%;
@@ -54,10 +60,8 @@
 		--accent-foreground: 204 94% 94%;
 		--destructive: 350 89% 60%;
 
-		/* white */
 		--constrast: 0 0% 100%;
 
-		/* Shadows */
 		--shadow-popover: 0px 7px 12px 3px rbga(255, 255, 255, 0.2);
 		--shadow-kbd: 0px 2px 0px 0px rgba(255, 255, 255, 0.07);
 		--shadow-btn: 0px 1px 0px 1px rgba(255, 255, 255, 0.03);
@@ -81,13 +85,6 @@
 		font-feature-settings: "rlig" 1, "calt" 1;
 	}
 
-	/* Mobile tap highlight */
-	/* https://developer.mozilla.org/en-US/docs/Web/CSS/-webkit-tap-highlight-color */
-	html {
-		-webkit-tap-highlight-color: rgba(128, 128, 128, 0.5);
-	}
-
-	/* === Scrollbars === */
 
 	::-webkit-scrollbar {
 		@apply w-2;
@@ -105,9 +102,6 @@
 	::-webkit-scrollbar-corner {
 		background: rgba(0, 0, 0, 0);
 	}
-
-	/* Firefox */
-	/* https://developer.mozilla.org/en-US/docs/Web/CSS/scrollbar-color#browser_compatibility */
 
 	html {
 		scrollbar-color: var(--bg-muted);
@@ -150,7 +144,6 @@
 		margin: 0;
 	}
 
-	/* Firefox */
 	input[type="number"] {
 		appearance: textfield;
 	}
