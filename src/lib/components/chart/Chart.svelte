@@ -1,4 +1,4 @@
-<script lang="ts">
+<script lang="ts" generics="T">
 	import type {
 		ChartConfiguration,
 		ChartConfigurationCustomTypesPerDataset,
@@ -6,8 +6,6 @@
 	import { enUS } from 'date-fns/locale';
 
 	import Chart from './RawChart.svelte';
-
-	type T = $$Generic;
 
 	export let data: Promise<T[]>;
 	export let type: 'line' | 'bar' | 'pie';
