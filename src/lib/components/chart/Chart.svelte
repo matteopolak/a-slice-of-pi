@@ -3,6 +3,8 @@
 		ChartConfiguration,
 		ChartConfigurationCustomTypesPerDataset,
 	} from 'chart.js';
+	import { enUS } from 'date-fns/locale';
+
 	import Chart from './RawChart.svelte';
 
 	type T = $$Generic;
@@ -10,7 +12,8 @@
 	export let data: Promise<T[]>;
 	export let type: 'line' | 'bar' | 'pie';
 	export let dataset: string;
-	export let hideLegend: boolean = false;
+	export let hideLegend = false;
+	export let timeSeries = false;
 
 	export let label: (d: T) => string;
 	export let value: (d: T) => number;
@@ -40,7 +43,7 @@
 		},
 		options: {
 			responsive: true,
-			borderColor: 'none',
+			borderColor: 'rgba(0, 0, 0, 0.5)',
 			plugins: {
 				legend: {
 					labels: {
@@ -50,6 +53,8 @@
 						},
 						boxHeight: 15,
 						boxWidth: 15,
+						usePointStyle: true,
+						pointStyle: 'circle',
 					},
 					display: !hideLegend,
 				},
@@ -66,21 +71,29 @@
 					},
 				},
 			},
-			scales:
-				type !== 'pie'
-					? {
-							y: {
-								ticks: {
-									color: 'white',
-								},
-							},
-							x: {
-								ticks: {
-									color: 'white',
-								},
-							},
-					  }
-					: undefined,
+			scales: {
+				y: {
+					ticks: {
+						color: 'white',
+					},
+					display: type !== 'pie',
+				},
+				x: {
+					ticks: {
+						color: 'white',
+					},
+					type: timeSeries ? 'timeseries' : undefined,
+					time: {
+						unit: 'month',
+					},
+					display: type !== 'pie',
+					adapters: {
+						date: {
+							locale: enUS,
+						},
+					},
+				},
+			},
 			datasets: {
 				line: {
 					fill: true,

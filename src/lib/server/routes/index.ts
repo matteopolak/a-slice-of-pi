@@ -3,8 +3,8 @@ import { z } from 'zod';
 import { PizzaSize, PizzaType, Range, ReviewSentiment } from '$lib/server/schema';
 import { order, orderItem, pricing, review } from '$lib/server/db/schema';
 import { db } from '$lib/server/db';
-import { type SQL, and, count, eq, gte, inArray, lt, sum, desc, countDistinct } from 'drizzle-orm';
-import { extractMonth } from '$lib/server/db/util';
+import { type SQL, and, count, eq, gte, inArray, lt, sum, desc, countDistinct, sql } from 'drizzle-orm';
+import { extractYearMonth } from '$lib/server/db/util';
 
 export const app = router({
 	reviewsBySentiment: procedure
@@ -113,13 +113,21 @@ export const app = router({
 			range: Range.optional(),
 		}))
 		.output(z.object({
-			month: z.number(),
+			timestamp: z.date(),
 			revenue: z.number(),
 		}).array())
 		.query(({ input }) => {
 			const query = db
 				.select({
-					month: extractMonth(order.createdAt),
+					timestamp: sql<string>`TO_TIMESTAMP(AVG(EXTRACT(EPOCH FROM ${order.createdAt})))`
+						.mapWith(v => {
+							const date = new Date(v);
+
+							date.setUTCDate(15);
+							date.setUTCHours(0, 0, 0, 0);
+
+							return date;
+						}),
 					revenue: sum(pricing.price).mapWith(parseInt),
 				})
 				.from(orderItem)
@@ -138,8 +146,8 @@ export const app = router({
 
 			return query
 				// order by month
-				.orderBy(extractMonth(order.createdAt))
-				.groupBy(extractMonth(order.createdAt));
+				.orderBy(extractYearMonth(order.createdAt))
+				.groupBy(extractYearMonth(order.createdAt));
 		}),
 });
 

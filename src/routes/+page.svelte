@@ -3,7 +3,6 @@
 
 	import { trpc } from '$lib/client';
 	import type { PizzaSize, PizzaType, Range } from '$lib/server/schema';
-	import { month } from '$lib/constants';
 	import Chart from '$lib/components/chart/Chart.svelte';
 	import DateRangePicker from '$lib/components/bits/date-range-picker/DateRangePicker.svelte';
 	import type { DateRange, Selected } from 'bits-ui';
@@ -149,9 +148,10 @@
 			})}
 			type="line"
 			dataset="Revenue by month"
-			label={d => month(d.month)}
+			label={d => d.timestamp}
 			value={d => d.revenue}
 			hideLegend
+			timeSeries
 		/>
 	</div>
 </div>
