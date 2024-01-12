@@ -9,8 +9,8 @@
 {#if $page.url.pathname === '/docs'}
 	<slot />
 {:else}
-	<div class="grid place-items-center p-8">
-		<div class="grid w-full gap-8 max-w-7xl">
+	<div class="grid place-items-center p-4 md:p-6 lg:p-8">
+		<div class="grid w-full gap-6 md:gap-8 max-w-7xl">
 			<slot />
 		</div>
 	</div>
