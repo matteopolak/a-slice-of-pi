@@ -1,4 +1,6 @@
 <script lang="ts">
+	import Countup from 'svelte-countup';
+
 	import { trpc } from '$lib/client';
 	import type { PizzaSize, PizzaType, Range } from '$lib/server/schema';
 	import { month } from '$lib/constants';
@@ -99,7 +101,14 @@
 			{#await revenue}
 				loading...
 			{:then revenue}
-				${revenue}
+				$<Countup
+					initial={0}
+					value={revenue}
+					duration={100}
+					step={1}
+					roundto={1}
+					format={true}
+				/>
 			{/await}
 		</div>
 	</div>

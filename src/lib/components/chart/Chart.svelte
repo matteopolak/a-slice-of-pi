@@ -22,21 +22,34 @@
 			datasets: [
 				{
 					data: [],
+					backgroundColor: [
+						'#FF6B6B',
+						'#FFAD60',
+						'#FFF1B8',
+						'#98C9A3',
+						'#C8A79C',
+						'#E6D5B8',
+						'#FFC4C4',
+						'#89CFF0',
+						'#C3B1E1',
+						'#98DDCA',
+					],
+					borderRadius: type === 'line' ? 20 : 10,
 				},
 			],
 		},
 		options: {
 			responsive: true,
+			borderColor: 'none',
 			plugins: {
-				colors: {
-					forceOverride: true,
-				},
 				legend: {
 					labels: {
 						color: 'white',
 						font: {
 							family: 'Roboto',
 						},
+						boxHeight: 15,
+						boxWidth: 15,
 					},
 					display: !hideLegend,
 				},
@@ -69,8 +82,9 @@
 					  }
 					: undefined,
 			datasets: {
-				pie: {
-					borderColor: 'none',
+				line: {
+					fill: true,
+					tension: 0.4,
 				},
 			},
 		},
