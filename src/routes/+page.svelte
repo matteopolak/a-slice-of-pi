@@ -18,11 +18,9 @@
 	};
 
 	$: revenue = trpc.totalRevenue.query({
-		range: {
-			start: new Date(2023, 0, 1),
-			// end is exclusive
-			end: new Date(2024, 0, 1),
-		},
+		start: new Date(2023, 0, 1),
+		// end is exclusive
+		end: new Date(2024, 0, 1),
 	});
 
 	let sizes: Selected<PizzaSize>[];
@@ -115,9 +113,7 @@
 	<div class="grid lg:grid-cols-3 gap-4 w-full">
 		<div id="pie" class="h-full bg-dark-4 rounded-3xl p-8 lg:col-span-1">
 			<Chart
-				data={trpc.reviewsBySentiment.query({
-					range,
-				})}
+				data={trpc.reviewsBySentiment.query(range)}
 				type="pie"
 				dataset="Reviews by sentiment"
 				label={d => d.sentiment}
@@ -128,7 +124,8 @@
 		<div id="ord" class="h-full bg-dark-4 rounded-3xl p-8 lg:col-span-2">
 			<Chart
 				data={trpc.ordersByStore.query({
-					range,
+					start: range.start,
+					end: range.end,
 					pizzaSize: sizes?.length ? sizes.map(s => s.value) : undefined,
 					pizzaType: types?.length ? types.map(s => s.value) : undefined,
 				})}
@@ -143,9 +140,7 @@
 
 	<div id="mon" class="w-full h-full bg-dark-4 rounded-3xl p-8">
 		<Chart
-			data={trpc.revenueByMonth.query({
-				range,
-			})}
+			data={trpc.revenueByMonth.query(range)}
 			type="line"
 			dataset="Revenue by month"
 			label={d => d.timestamp}

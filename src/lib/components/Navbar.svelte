@@ -1,14 +1,26 @@
+<script lang="ts">
+	import GitHub from '~icons/bxl/github';
+	import Api from '~icons/ic/baseline-api';
+</script>
+
 <header class="border-b border-border bg-background/75 backdrop-blur">
-	<div class="container px-4">
+	<div class="container px-4 max-w-7xl">
 		<div class="flex h-[70px] items-center justify-between gap-3">
 			<div class="flex items-center gap-1.5">
-				<a
-					href="/"
-					class="ml-2 rounded-md flex flex-row place-items-center gap-2"
-				>
+				<a href="/" class="rounded-md flex flex-row place-items-center gap-2">
 					<img src="/favicon.png" alt="Logo" class="sq-12" />
 
 					<span class="font-bold text-xl font-morn"> a slice of pi </span>
+				</a>
+			</div>
+
+			<div class="flex items-center gap-4">
+				<a href="/docs">
+					<Api class="sq-6" />
+				</a>
+
+				<a href="https://github.com/matteopolak/a-slice-of-pi">
+					<GitHub class="sq-6" />
 				</a>
 			</div>
 		</div>

@@ -8,9 +8,16 @@ import { extractYearMonth } from '$lib/server/db/util';
 
 export const app = router({
 	reviewsBySentiment: procedure
-		.input(z.object({
-			range: Range.optional(),
-		}))
+		.meta({
+			openapi: {
+				method: 'POST',
+				summary: 'Get review count by sentiment',
+				description: 'Gets the number of reviews by sentiment.',
+				tags: ['agg'],
+				path: '/agg/reviews/sentiment',
+			}
+		})
+		.input(Range.optional())
 		.output(z.object({
 			sentiment: ReviewSentiment,
 			count: z.number(),
@@ -23,10 +30,10 @@ export const app = router({
 				})
 				.from(review);
 
-			if (input.range) {
+			if (input) {
 				query.where(and(
-					gte(review.createdAt, input.range.start),
-					lt(review.createdAt, input.range.end)
+					gte(review.createdAt, input.start),
+					lt(review.createdAt, input.end)
 				));
 			}
 
@@ -36,11 +43,22 @@ export const app = router({
 				.orderBy(desc(count()));
 		}),
 	ordersByStore: procedure
+		.meta({
+			openapi: {
+				method: 'POST',
+				summary: 'Get order count by store',
+				description: 'Gets the number of orders by store.',
+				tags: ['agg'],
+				path: '/agg/orders/store',
+			}
+		})
 		.input(z.object({
 			pizzaType: PizzaType.array(),
 			pizzaSize: PizzaSize.array(),
-			range: Range,
-		}).partial())
+		})
+			.merge(Range)
+			.partial()
+		)
 		.output(z.object({
 			store: z.string(),
 			count: z.number(),
@@ -63,10 +81,10 @@ export const app = router({
 				filters.push(inArray(orderItem.size, input.pizzaSize));
 			}
 
-			if (input.range) {
+			if (input.start && input.end) {
 				filters.push(and(
-					gte(order.createdAt, input.range.start),
-					lt(order.createdAt, input.range.end)
+					gte(order.createdAt, input.start),
+					lt(order.createdAt, input.end)
 				)!);
 			}
 
@@ -82,9 +100,16 @@ export const app = router({
 				.orderBy(desc(countDistinct(order.id)));
 		}),
 	totalRevenue: procedure
-		.input(z.object({
-			range: Range,
-		}))
+		.meta({
+			openapi: {
+				method: 'POST',
+				summary: 'Get total revenue',
+				description: 'Gets the total revenue.',
+				tags: ['agg'],
+				path: '/agg/revenue/total',
+			}
+		})
+		.input(Range)
 		.output(z.number())
 		.query(async ({ input }) => {
 			const rows = await db
@@ -102,18 +127,25 @@ export const app = router({
 					eq(orderItem.type, pricing.type),
 				))
 				.where(and(
-					gte(order.createdAt, input.range.start),
-					lt(order.createdAt, input.range.end)
+					gte(order.createdAt, input.start),
+					lt(order.createdAt, input.end)
 				));
 
 			return rows[0].total ?? 0;
 		}),
 	revenueByMonth: procedure
-		.input(z.object({
-			range: Range.optional(),
-		}))
+		.meta({
+			openapi: {
+				method: 'POST',
+				summary: 'Get revenue by month',
+				description: 'Gets the revenue by month.',
+				tags: ['agg'],
+				path: '/agg/revenue/month',
+			}
+		})
+		.input(Range.optional())
 		.output(z.object({
-			timestamp: z.date(),
+			timestamp: z.string().datetime(),
 			revenue: z.number(),
 		}).array())
 		.query(({ input }) => {
@@ -126,7 +158,7 @@ export const app = router({
 							date.setUTCDate(15);
 							date.setUTCHours(0, 0, 0, 0);
 
-							return date;
+							return date.toISOString();
 						}),
 					revenue: sum(pricing.price).mapWith(parseInt),
 				})
@@ -137,10 +169,10 @@ export const app = router({
 					eq(orderItem.type, pricing.type),
 				));
 
-			if (input.range) {
+			if (input) {
 				query.where(and(
-					gte(order.createdAt, input.range.start),
-					lt(order.createdAt, input.range.end)
+					gte(order.createdAt, input.start),
+					lt(order.createdAt, input.end)
 				));
 			}
 

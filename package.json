@@ -41,6 +41,7 @@
 		"vitest": "^1.0.0"
 	},
 	"dependencies": {
+		"@iconify-json/bxl": "^1.1.10",
 		"@iconify-json/ic": "^1.1.17",
 		"@iconify-json/mdi": "^1.1.64",
 		"@trpc/client": "^10.45.0",
