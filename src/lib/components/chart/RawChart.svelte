@@ -25,4 +25,6 @@
 	}
 </script>
 
-<canvas bind:this={canvas} />
+<svelte:window on:resize={() => chart.resize()} />
+
+<canvas bind:this={canvas} class="!w-full" />

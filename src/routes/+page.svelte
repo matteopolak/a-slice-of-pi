@@ -87,7 +87,7 @@
 	/>
 </div>
 
-<div class="dashboard overflow-hidden">
+<div class="dashboard overflow-auto">
 	<div
 		id="rev"
 		class="p-3 justify-center place-items-center flex flex-row text-4xl bg-dark-4 rounded-3xl gap-4"
@@ -110,7 +110,7 @@
 		</div>
 	</div>
 
-	<div class="grid lg:grid-cols-3 gap-4 w-full">
+	<div class="grid lg:grid-cols-3 gap-4 max-w-full">
 		<div id="pie" class="h-full bg-dark-4 rounded-3xl p-8 lg:col-span-1">
 			<Chart
 				data={trpc.reviewsBySentiment.query(range)}
