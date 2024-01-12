@@ -142,6 +142,11 @@
 	}
 
 	$: data.then(updateOptions);
+	$: {
+		options.options!.plugins!.title!.text = dataset;
+		if (labels.length) options.data.labels = labels;
+		options = options;
+	}
 </script>
 
 <Chart {options} />

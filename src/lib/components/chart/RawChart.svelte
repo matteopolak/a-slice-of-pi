@@ -19,6 +19,7 @@
 	});
 
 	$: if (chart) {
+		console.log('update');
 		chart.data.labels = options.data.labels;
 		chart.data.datasets = options.data.datasets;
 		chart.update();

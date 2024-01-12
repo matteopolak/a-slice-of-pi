@@ -26,6 +26,10 @@
 	let sizes: Selected<PizzaSize>[];
 	let types: Selected<PizzaType>[];
 	let value: DateRange;
+	let pizzaKey: Selected<'size' | 'type'> = {
+		label: 'Pizza Type',
+		value: 'type',
+	};
 
 	$: if (value?.end && value?.start) {
 		range = {
@@ -41,6 +45,7 @@
 	<Select
 		placeholder="Select pizza sizes"
 		icon={Ruler}
+		multiple
 		bind:selected={sizes}
 		options={[
 			{
@@ -61,6 +66,7 @@
 	<Select
 		placeholder="Select pizza types"
 		icon={Pizza}
+		multiple
 		bind:selected={types}
 		options={[
 			{
@@ -153,19 +159,41 @@
 			/>
 		</div>
 
-		<div class="w-full h-full bg-dark-4 rounded-3xl p-8 lg:col-span-1">
+		<div
+			class="w-full h-full bg-dark-4 rounded-3xl p-8 lg:col-span-1 flex flex-col"
+		>
 			<Chart
 				data={trpc.ordersByStoreByPizza.query({
 					start: range.start,
 					end: range.end,
-					key: 'size',
+					key: pizzaKey?.value ?? 'type',
 				})}
 				type="radar"
-				dataset="Orders by store by pizza type"
+				dataset={pizzaKey?.value === 'type'
+					? 'Orders by store by pizza type'
+					: 'Orders by store by pizza size'}
 				animate
-				labels={['S', 'M', 'L']}
+				labels={pizzaKey?.value === 'type'
+					? ['Cheese', 'Pepperoni', 'Deluxe', 'Hawaiian', 'Meatlovers']
+					: ['S', 'M', 'L']}
 				label={d => d.x}
 				value={d => d.y}
+			/>
+
+			<Select
+				placeholder="Select aggregation"
+				icon={Pizza}
+				bind:selected={pizzaKey}
+				options={[
+					{
+						label: 'Pizza Type',
+						value: 'type',
+					},
+					{
+						label: 'Pizza Size',
+						value: 'size',
+					},
+				]}
 			/>
 		</div>
 	</div>
