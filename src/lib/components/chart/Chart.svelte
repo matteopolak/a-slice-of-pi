@@ -86,6 +86,11 @@
 					time: {
 						unit: 'month',
 					},
+					adapters: {
+						date: {
+							locale: enUS,
+						},
+					},
 					display: type !== 'pie',
 				},
 			},
