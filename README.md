@@ -1,38 +1,64 @@
-# create-svelte
+<p align="center">
+  <img height="200" src="static/favicon.png">
+</p>
 
-Everything you need to build a Svelte project, powered by [`create-svelte`](https://github.com/sveltejs/kit/tree/main/packages/create-svelte).
+<h1 align="center">a slice of pi</h1>
 
-## Creating a project
+**a slice of pi** is a web app created for the [OutStem Coding Challenge](https://github.com/AES-Outreach/Summer-2024-Coop-Interviews) that allows users
+to view charts about various statistics aggregated from the fictional pizza place of the same name.
 
-If you're seeing this, you've probably already done this step. Congrats!
+## Tools
+
+- [Svelte](https://svelte.dev/) for reactivity and components
+- [SvelteKit](https://kit.svelte.dev/) for routing and SSR
+- [tRPC](https://trpc.io/) for API
+- [Redoc](https://redoc.ly/) + [OpenAPI](https://swagger.io/specification/) for API documentation
+- [Chart.js](https://chartjs.org/) for charts
+- [Tailwind CSS](https://tailwindcss.com/) for styling
+- [Bits UI](https://www.bits-ui.com/) for components
+- [PostgreSQL](https://www.postgresql.org/) for database
+- [Drizzle](https://orm.drizzle.team/) + [Drizzle Kit](https://orm.drizzle.team/kit-docs) for database ORM and migrations
+- [Cloudflare Tunnels](https://www.cloudflare.com/products/tunnel/) for deployment
+
+## Major Parts
+
+- [**src/lib/server/db**](src/lib/server/db) - database utilities and Drizzle schema
+- [**src/lib/server/routes**](src/lib/server/routes) - API endpoints
+- [**drizzle**](drizzle) - database migrations
+- [**src/routes**](src/routes) - SvelteKit routes
+- [**src/lib/components**](src/lib/components) - components
+- [**src/lib/components/bits**](src/lib/components/bits) - components from Bits UI
+
+## Development
+
+### Prerequisites
+
+- [Node.js](https://nodejs.org/en/)
+- [PostgreSQL](https://www.postgresql.org/)
+
+### Setup
 
 ```bash
-# create a new project in the current directory
-npm create svelte@latest
+# install dependencies
+pnpm install
 
-# create a new project in my-app
-npm create svelte@latest my-app
+# start the development server
+pnpm dev
+
+# load in data (one-time)
+pnpm load-data
 ```
 
-## Developing
+### Environment Variables
 
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
+See the [`.env.example`](.env.example) file for a list of environment variables that need to be set.
+
+## Deployment
 
 ```bash
-npm run dev
+# build for production
+pnpm build
 
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
+# start the server
+pm2 start ecosystem.config.cjs
 ```
-
-## Building
-
-To create a production version of your app:
-
-```bash
-npm run build
-```
-
-You can preview the production build with `npm run preview`.
-
-> To deploy your app, you may need to install an [adapter](https://kit.svelte.dev/docs/adapters) for your target environment.
