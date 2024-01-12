@@ -20,7 +20,7 @@
 
 	$: if (chart) {
 		chart.data.labels = options.data.labels;
-		chart.data.datasets[0].data = options.data.datasets[0].data;
+		chart.data.datasets = options.data.datasets;
 		chart.update();
 	}
 </script>

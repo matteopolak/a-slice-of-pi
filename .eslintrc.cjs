@@ -8,6 +8,7 @@ module.exports = {
 	],
 	globals: {
 		T: true,
+		K: true,
 	},
 	parser: '@typescript-eslint/parser',
 	plugins: ['@typescript-eslint'],
@@ -29,5 +30,8 @@ module.exports = {
 				parser: '@typescript-eslint/parser'
 			}
 		}
-	]
+	],
+	rules: {
+		'no-mixed-spaces-and-tabs': ['error', 'smart-tabs'],
+	}
 };

@@ -9,7 +9,7 @@ type FlyAndScaleParams = {
 
 const defaultFlyAndScaleParams = { y: -8, start: 0.95, duration: 200 };
 
-export const flyAndScale = (node: Element, params?: FlyAndScaleParams): TransitionConfig => {
+export function flyAndScale(node: Element, params?: FlyAndScaleParams): TransitionConfig {
 	const style = getComputedStyle(node);
 	const transform = style.transform === "none" ? "" : style.transform;
 	const withDefaults = { ...defaultFlyAndScaleParams, ...params };
@@ -45,4 +45,4 @@ export const flyAndScale = (node: Element, params?: FlyAndScaleParams): Transiti
 		},
 		easing: cubicOut
 	};
-};
+}

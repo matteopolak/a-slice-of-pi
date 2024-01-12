@@ -1,6 +1,23 @@
 <script lang="ts">
+	import { onMount } from 'svelte';
 	import GitHub from '~icons/bxl/github';
 	import Api from '~icons/ic/baseline-api';
+
+	let show = false;
+
+	onMount(() => {
+		const interval = setInterval(() => {
+			show = true;
+
+			setTimeout(() => {
+				show = false;
+			}, 250);
+		}, 4_000);
+
+		return () => {
+			clearInterval(interval);
+		};
+	});
 </script>
 
 <header class="border-b border-border bg-background/75 backdrop-blur">
@@ -10,7 +27,13 @@
 				<a href="/" class="rounded-md flex flex-row place-items-center gap-2">
 					<img src="/favicon.png" alt="Logo" class="sq-12" />
 
-					<span class="font-bold text-xl font-morn"> a slice of pi </span>
+					<span class="font-bold text-xl font-morn">
+						{#if show}
+							a slice of pie
+						{:else}
+							a slice of pi
+						{/if}
+					</span>
 				</a>
 			</div>
 

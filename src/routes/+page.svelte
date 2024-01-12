@@ -89,7 +89,6 @@
 
 <div class="dashboard overflow-auto">
 	<div
-		id="rev"
 		class="p-3 justify-center place-items-center flex flex-row text-4xl bg-dark-4 rounded-3xl gap-4"
 	>
 		<span> Revenue </span>
@@ -111,7 +110,7 @@
 	</div>
 
 	<div class="grid lg:grid-cols-3 gap-4 max-w-full">
-		<div id="pie" class="h-full bg-dark-4 rounded-3xl p-8 lg:col-span-1">
+		<div class="h-full bg-dark-4 rounded-3xl p-8 lg:col-span-1">
 			<Chart
 				data={trpc.reviewsBySentiment.query(range)}
 				type="pie"
@@ -121,7 +120,7 @@
 			/>
 		</div>
 
-		<div id="ord" class="h-full bg-dark-4 rounded-3xl p-8 lg:col-span-2">
+		<div class="h-full bg-dark-4 rounded-3xl p-8 lg:col-span-2">
 			<Chart
 				data={trpc.ordersByStore.query({
 					start: range.start,
@@ -134,19 +133,54 @@
 				label={d => d.store}
 				value={d => d.count}
 				hideLegend
+				yLabel="Orders"
 			/>
 		</div>
 	</div>
 
-	<div id="mon" class="w-full h-full bg-dark-4 rounded-3xl p-8">
+	<div class="grid lg:grid-cols-3 gap-4 max-w-full">
+		<div class="w-full h-full bg-dark-4 rounded-3xl p-8 lg:col-span-2">
+			<Chart
+				data={trpc.revenueByMonth.query(range)}
+				type="line"
+				dataset="Revenue by month"
+				label={d => d.timestamp}
+				value={d => d.revenue}
+				hideLegend
+				timeSeries
+				animate
+				yLabel="Revenue ($)"
+			/>
+		</div>
+
+		<div class="w-full h-full bg-dark-4 rounded-3xl p-8 lg:col-span-1">
+			<Chart
+				data={trpc.ordersByStoreByPizza.query({
+					start: range.start,
+					end: range.end,
+					key: 'size',
+				})}
+				type="radar"
+				dataset="Orders by store by pizza type"
+				animate
+				labels={['S', 'M', 'L']}
+				label={d => d.x}
+				value={d => d.y}
+			/>
+		</div>
+	</div>
+
+	<div class="w-full h-full bg-dark-4 rounded-3xl p-8">
 		<Chart
-			data={trpc.revenueByMonth.query(range)}
+			data={trpc.revenueByStoreByMonth.query(range)}
 			type="line"
-			dataset="Revenue by month"
+			dataset="Revenue by store per month"
 			label={d => d.timestamp}
 			value={d => d.revenue}
-			hideLegend
 			timeSeries
+			animate
+			stacked
+			yLabel="Revenue ($)"
 		/>
 	</div>
 </div>

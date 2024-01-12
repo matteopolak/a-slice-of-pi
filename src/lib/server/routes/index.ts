@@ -3,8 +3,8 @@ import { z } from 'zod';
 import { PizzaSize, PizzaType, Range, ReviewSentiment } from '$lib/server/schema';
 import { order, orderItem, pricing, review } from '$lib/server/db/schema';
 import { db } from '$lib/server/db';
-import { type SQL, and, count, eq, gte, inArray, lt, sum, desc, countDistinct, sql } from 'drizzle-orm';
-import { extractYearMonth } from '$lib/server/db/util';
+import { type SQL, and, count, eq, gte, inArray, lt, sum, desc, countDistinct } from 'drizzle-orm';
+import { averageYearMonth, extractYearMonth } from '$lib/server/db/util';
 
 export const app = router({
 	reviewsBySentiment: procedure
@@ -96,8 +96,7 @@ export const app = router({
 
 			return query
 				.groupBy(order.store)
-				// QoL: show the most popular first
-				.orderBy(desc(countDistinct(order.id)));
+				.orderBy(order.store);
 		}),
 	totalRevenue: procedure
 		.meta({
@@ -151,15 +150,7 @@ export const app = router({
 		.query(({ input }) => {
 			const query = db
 				.select({
-					timestamp: sql<string>`TO_TIMESTAMP(AVG(EXTRACT(EPOCH FROM ${order.createdAt})))`
-						.mapWith(v => {
-							const date = new Date(v);
-
-							date.setUTCDate(15);
-							date.setUTCHours(0, 0, 0, 0);
-
-							return date.toISOString();
-						}),
+					timestamp: averageYearMonth(order.createdAt),
 					revenue: sum(pricing.price).mapWith(parseInt),
 				})
 				.from(orderItem)
@@ -180,6 +171,101 @@ export const app = router({
 				// order by month
 				.orderBy(extractYearMonth(order.createdAt))
 				.groupBy(extractYearMonth(order.createdAt));
+		}),
+	revenueByStoreByMonth: procedure
+		.meta({
+			openapi: {
+				method: 'POST',
+				summary: 'Get revenue by store per month',
+				description: 'Gets the revenue by store per month.',
+				tags: ['agg'],
+				path: '/agg/revenue/store',
+			}
+		})
+		.input(Range.optional())
+		.output(z.record(z.string(), z.object({
+			revenue: z.number(),
+			timestamp: z.string().datetime(),
+		}).array()))
+		.query(async ({ input }) => {
+			const query = db.select({
+				timestamp: averageYearMonth(order.createdAt),
+				store: order.store,
+				revenue: sum(pricing.price).mapWith(parseInt),
+			})
+				.from(orderItem)
+				.innerJoin(order, eq(orderItem.orderId, order.id))
+				.innerJoin(pricing, and(
+					eq(orderItem.size, pricing.size),
+					eq(orderItem.type, pricing.type),
+				));
+
+			if (input) {
+				query.where(and(
+					gte(order.createdAt, input.start),
+					lt(order.createdAt, input.end)
+				));
+			}
+
+			const rows = await query
+				.orderBy(order.store, extractYearMonth(order.createdAt))
+				.groupBy(extractYearMonth(order.createdAt), order.store);
+
+			return rows.reduce((groups, row) => {
+				const group = groups[row.store] ?? (groups[row.store] = []);
+
+				group.push({
+					timestamp: row.timestamp,
+					revenue: row.revenue,
+				});
+
+				return groups;
+			}, {} as Record<string, { timestamp: string, revenue: number }[]>);
+		}),
+	ordersByStoreByPizza: procedure
+		.meta({
+			openapi: {
+				method: 'POST',
+				summary: 'Get orders by store by pizza',
+				description: 'Gets the number of orders by store by pizza.',
+				tags: ['agg'],
+				path: '/agg/orders/store/pizza',
+			}
+		})
+		.input(z.object({
+			key: z.enum(['type', 'size']),
+		}).merge(Range.partial()))
+		.output(z.record(z.string(), z.object({ x: z.string(), y: z.number() }).array()))
+		.query(async ({ input }) => {
+			const query = db.select({
+				store: order.store,
+				label: orderItem[input.key],
+				count: count(),
+			})
+				.from(orderItem)
+				.innerJoin(order, eq(orderItem.orderId, order.id));
+
+			if (input.start && input.end) {
+				query.where(and(
+					gte(order.createdAt, input.start),
+					lt(order.createdAt, input.end)
+				));
+			}
+
+			const rows = await query
+				.groupBy(order.store, orderItem[input.key])
+				.orderBy(order.store, orderItem[input.key]);
+
+			return rows.reduce((groups, row) => {
+				const group = groups[row.store] ?? (groups[row.store] = []);
+
+				group.push({
+					x: row.label,
+					y: row.count,
+				});
+
+				return groups;
+			}, {} as Record<string, { x: string, y: number }[]>);
 		}),
 });
 

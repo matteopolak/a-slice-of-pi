@@ -1,4 +1,6 @@
 <script lang="ts" generics="T">
+	import { COLOURS, COLOURS_OPAQUE } from '$lib/constants';
+
 	import type {
 		ChartConfiguration,
 		ChartConfigurationCustomTypesPerDataset,
@@ -7,11 +9,18 @@
 
 	import Chart from './RawChart.svelte';
 
-	export let data: Promise<T[]>;
-	export let type: 'line' | 'bar' | 'pie';
+	export let data: Promise<T[] | Record<string, T[]>>;
+
+	export let type: 'line' | 'bar' | 'pie' | 'radar';
 	export let dataset: string;
 	export let hideLegend = false;
 	export let timeSeries = false;
+	export let animate = false;
+	export let stacked = false;
+	export let yLabel: string | undefined = undefined;
+
+	export let unit: 'month' | 'day' | 'hour' | 'minute' | 'second' = 'month';
+	export let labels: string[] = [];
 
 	export let label: (d: T) => string;
 	export let value: (d: T) => number;
@@ -19,25 +28,8 @@
 	let options: ChartConfiguration | ChartConfigurationCustomTypesPerDataset = {
 		type,
 		data: {
-			labels: [],
-			datasets: [
-				{
-					data: [],
-					backgroundColor: [
-						'#FF6B6B',
-						'#FFAD60',
-						'#FFF1B8',
-						'#98C9A3',
-						'#C8A79C',
-						'#E6D5B8',
-						'#FFC4C4',
-						'#89CFF0',
-						'#C3B1E1',
-						'#98DDCA',
-					],
-					borderRadius: type === 'line' ? 20 : 10,
-				},
-			],
+			labels,
+			datasets: [],
 		},
 		options: {
 			responsive: true,
@@ -74,7 +66,18 @@
 					ticks: {
 						color: 'white',
 					},
+					type: type === 'radar' ? 'radialLinear' : 'linear',
+					stacked,
 					display: type !== 'pie',
+					title: {
+						display: !!yLabel,
+						text: yLabel,
+						color: 'white',
+						font: {
+							size: 16,
+							family: 'Roboto',
+						},
+					},
 				},
 				x: {
 					ticks: {
@@ -82,28 +85,59 @@
 					},
 					type: timeSeries ? 'timeseries' : 'category',
 					time: {
-						unit: 'month',
+						unit,
 					},
 					adapters: {
 						date: {
 							locale: enUS,
 						},
 					},
-					display: type !== 'pie',
+					display: type !== 'pie' && type !== 'radar',
 				},
 			},
 			datasets: {
 				line: {
 					fill: true,
-					tension: 0.4,
+					animations: animate
+						? {
+								tension: {
+									duration: 3000,
+									easing: 'easeInOutQuad',
+									from: 0.3,
+									to: 0.5,
+									loop: true,
+								},
+						  }
+						: undefined,
 				},
 			},
 		},
 	};
 
-	function updateOptions(data: T[]) {
-		options.data.labels = data.map(label);
-		options.data.datasets[0].data = data.map(value);
+	function updateOptions(data: T[] | Record<string, T[]>) {
+		if (Array.isArray(data)) {
+			options.data.labels = data.map(label);
+			options.data.datasets = [
+				{
+					data: data.map(value),
+					backgroundColor: type === 'line' ? COLOURS[0] : COLOURS,
+					borderRadius: type === 'line' ? 20 : 10,
+					pointRadius: 5,
+				},
+			];
+		} else if (type === 'line' || type === 'radar') {
+			// @ts-expect-error - the bubble chart is not in use here
+			options.data.datasets = Object.entries(data).map(([k, v], i) => ({
+				label: k,
+				data: v.map(d => ({
+					x: labels.length ? labels.indexOf(label(d)) : label(d),
+					[type === 'radar' ? 'r' : 'y']: value(d),
+				})),
+				parsing: labels.length === 0,
+				backgroundColor: stacked ? COLOURS[i] : COLOURS_OPAQUE[i],
+			}));
+		}
+
 		options = options;
 	}
 
