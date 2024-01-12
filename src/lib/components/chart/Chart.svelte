@@ -82,16 +82,11 @@
 					ticks: {
 						color: 'white',
 					},
-					type: timeSeries ? 'timeseries' : undefined,
+					type: timeSeries ? 'timeseries' : 'category',
 					time: {
 						unit: 'month',
 					},
 					display: type !== 'pie',
-					adapters: {
-						date: {
-							locale: enUS,
-						},
-					},
 				},
 			},
 			datasets: {
