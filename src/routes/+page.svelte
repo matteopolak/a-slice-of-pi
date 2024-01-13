@@ -97,7 +97,7 @@
 			/>
 		</div>
 
-		<div class="grid lg:grid-cols-2 gap-2 mt-auto">
+		<div class="grid lg:grid-cols-2 gap-2 mt-auto w-full">
 			<Select
 				placeholder="Filter by pizza size"
 				icon={Ruler}
@@ -187,7 +187,7 @@
 			/>
 		</div>
 
-		<div class="flex">
+		<div class="flex w-full mt-auto">
 			<Select
 				placeholder="Select aggregation"
 				icon={Pizza}
