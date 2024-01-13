@@ -15,7 +15,7 @@
 
 <Select.Root items={options} {multiple} bind:selected>
 	<Select.Trigger
-		class="flex-grow inline-flex h-input items-center rounded-9px border border-border-input bg-background px-[11px] text-sm transition-colors placeholder:text-foreground-alt/50  focus:outline-none focus:ring-2 focus:ring-foreground focus:ring-offset-2 focus:ring-offset-background"
+		class="flex-grow inline-flex h-input items-center rounded-9px border border-border-input bg-background px-[11px] text-sm transition-colors placeholder:text-foreground-alt/50 focus:outline-none focus:ring-2 focus:ring-foreground focus:ring-offset-2 focus:ring-offset-background"
 		aria-label={placeholder}
 	>
 		<svelte:component this={icon} class="mr-[9px] text-muted-foreground sq-6" />

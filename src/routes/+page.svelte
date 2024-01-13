@@ -10,6 +10,7 @@
 
 	import Pizza from '~icons/ic/baseline-local-pizza';
 	import Ruler from '~icons/mdi/ruler';
+	import { PIZZA_SIZE_PRETTY } from '$lib/constants';
 
 	let range: Range = {
 		start: new Date(Date.UTC(2023, 0, 1)),
@@ -40,57 +41,9 @@
 </script>
 
 <div class="flex flex-row flex-wrap gap-4 justify-center w-full">
-	<DateRangePicker bind:value />
-
-	<Select
-		placeholder="Select pizza sizes"
-		icon={Ruler}
-		multiple
-		bind:selected={sizes}
-		options={[
-			{
-				label: 'Small',
-				value: 'S',
-			},
-			{
-				label: 'Medium',
-				value: 'M',
-			},
-			{
-				label: 'Large',
-				value: 'L',
-			},
-		]}
-	/>
-
-	<Select
-		placeholder="Select pizza types"
-		icon={Pizza}
-		multiple
-		bind:selected={types}
-		options={[
-			{
-				label: 'Cheese',
-				value: 'Cheese',
-			},
-			{
-				label: 'Pepperoni',
-				value: 'Pepperoni',
-			},
-			{
-				label: 'Deluxe',
-				value: 'Deluxe',
-			},
-			{
-				label: 'Hawaiian',
-				value: 'Hawaiian',
-			},
-			{
-				label: 'Meatlovers',
-				value: 'Meatlovers',
-			},
-		]}
-	/>
+	<div class="w-full max-w-lg">
+		<DateRangePicker bind:value />
+	</div>
 </div>
 
 <div class="dashboard overflow-auto">
@@ -115,8 +68,8 @@
 		</div>
 	</div>
 
-	<div class="grid lg:grid-cols-3 gap-4 max-w-full">
-		<div class="h-full bg-dark-4 rounded-3xl p-8 lg:col-span-1">
+	<div class="grid lg:grid-cols-5 gap-4 max-w-full">
+		<div class="h-full bg-dark-4 rounded-3xl p-8 lg:col-span-2">
 			<Chart
 				data={trpc.reviewsBySentiment.query(range)}
 				type="pie"
@@ -126,7 +79,61 @@
 			/>
 		</div>
 
-		<div class="h-full bg-dark-4 rounded-3xl p-8 lg:col-span-2">
+		<div
+			class="h-full bg-dark-4 rounded-3xl p-8 lg:col-span-3 flex flex-col gap-4"
+		>
+			<div class="grid md:grid-cols-2 gap-2">
+				<Select
+					placeholder="Filter by pizza size"
+					icon={Ruler}
+					multiple
+					bind:selected={sizes}
+					options={[
+						{
+							label: 'Small',
+							value: 'S',
+						},
+						{
+							label: 'Medium',
+							value: 'M',
+						},
+						{
+							label: 'Large',
+							value: 'L',
+						},
+					]}
+				/>
+
+				<Select
+					placeholder="Filter by pizza type"
+					icon={Pizza}
+					multiple
+					bind:selected={types}
+					options={[
+						{
+							label: 'Cheese',
+							value: 'Cheese',
+						},
+						{
+							label: 'Pepperoni',
+							value: 'Pepperoni',
+						},
+						{
+							label: 'Deluxe',
+							value: 'Deluxe',
+						},
+						{
+							label: 'Hawaiian',
+							value: 'Hawaiian',
+						},
+						{
+							label: 'Meatlovers',
+							value: 'Meatlovers',
+						},
+					]}
+				/>
+			</div>
+
 			<Chart
 				data={trpc.ordersByStore.query({
 					start: range.start,
@@ -160,26 +167,8 @@
 		</div>
 
 		<div
-			class="w-full h-full bg-dark-4 rounded-3xl p-8 lg:col-span-1 flex flex-col"
+			class="w-full h-full bg-dark-4 rounded-3xl p-8 lg:col-span-1 flex flex-col gap-4"
 		>
-			<Chart
-				data={trpc.ordersByStoreByPizza.query({
-					start: range.start,
-					end: range.end,
-					key: pizzaKey?.value ?? 'type',
-				})}
-				type="radar"
-				dataset={pizzaKey?.value === 'type'
-					? 'Orders by store by pizza type'
-					: 'Orders by store by pizza size'}
-				animate
-				labels={pizzaKey?.value === 'type'
-					? ['Cheese', 'Pepperoni', 'Deluxe', 'Hawaiian', 'Meatlovers']
-					: ['S', 'M', 'L']}
-				label={d => d.x}
-				value={d => d.y}
-			/>
-
 			<Select
 				placeholder="Select aggregation"
 				icon={Pizza}
@@ -195,6 +184,24 @@
 					},
 				]}
 			/>
+
+			<Chart
+				data={trpc.ordersByStoreByPizza.query({
+					start: range.start,
+					end: range.end,
+					key: pizzaKey?.value ?? 'type',
+				})}
+				type="radar"
+				dataset={pizzaKey?.value === 'type'
+					? 'Orders by store by pizza type'
+					: 'Orders by store by pizza size'}
+				animate
+				labels={pizzaKey?.value === 'type'
+					? ['Cheese', 'Pepperoni', 'Deluxe', 'Hawaiian', 'Meatlovers']
+					: ['Small', 'Medium', 'Large']}
+				label={d => PIZZA_SIZE_PRETTY[d.x] ?? d.x}
+				value={d => d.y}
+			/>
 		</div>
 	</div>
 
@@ -202,7 +209,7 @@
 		<Chart
 			data={trpc.revenueByStoreByMonth.query(range)}
 			type="line"
-			dataset="Revenue by store per month"
+			dataset="Revenue by store per month (stacked)"
 			label={d => d.timestamp}
 			value={d => d.revenue}
 			timeSeries

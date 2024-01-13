@@ -1,3 +1,5 @@
+import type { PizzaSize } from './server/schema';
+
 export const MONTHS = [
 	'Jan',
 	'Feb',
@@ -34,4 +36,10 @@ export const COLOURS = [
 	'#98DDCA',
 ];
 
-export const COLOURS_OPAQUE = COLOURS.map((c) => c + 'd0');
+export const COLOURS_OPAQUE = COLOURS.map((c) => c + '80');
+
+export const PIZZA_SIZE_PRETTY: Record<PizzaSize | string, string> = {
+	S: 'Small',
+	M: 'Medium',
+	L: 'Large',
+};

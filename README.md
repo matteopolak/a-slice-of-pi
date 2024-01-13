@@ -20,6 +20,12 @@ to view charts about various statistics aggregated from the fictional pizza plac
 - [Drizzle](https://orm.drizzle.team/) + [Drizzle Kit](https://orm.drizzle.team/kit-docs) for database ORM and migrations
 - [Cloudflare Tunnels](https://www.cloudflare.com/products/tunnel/) for deployment
 
+## Bonus
+
+- [x] API documentation
+- [x] Chart and page animations
+- [x] Nice header and cohesive design
+
 ## Major Parts
 
 - [**src/lib/server/db**](src/lib/server/db) - database utilities and Drizzle schema
@@ -28,6 +34,22 @@ to view charts about various statistics aggregated from the fictional pizza plac
 - [**src/routes**](src/routes) - SvelteKit routes
 - [**src/lib/components**](src/lib/components) - components
 - [**src/lib/components/bits**](src/lib/components/bits) - components from Bits UI
+
+## Website sequence diagram
+
+```mermaid
+sequenceDiagram
+  participant C as Client
+  participant S as Server
+  participant D as Database
+
+  C->>S: get page
+  S->>C: content with empty charts
+  C->>S: load chart data
+  S->>D: get chart data
+  D->>S: chart data
+  S->>C: chart data
+```
 
 ## Development
 

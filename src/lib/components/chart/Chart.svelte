@@ -107,7 +107,7 @@
 									to: 0.5,
 									loop: true,
 								},
-						  }
+							}
 						: undefined,
 				},
 			},
