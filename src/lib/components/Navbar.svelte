@@ -26,7 +26,7 @@
 		<div class="flex h-[70px] items-center justify-between gap-3">
 			<div class="flex items-center gap-1.5">
 				<a href="/" class="rounded-md flex flex-row place-items-center gap-2">
-					<img src="/favicon.svg" alt="Logo" class="sq-12" />
+					<img src="/favicon.webp" alt="Logo" class="sq-12" />
 
 					<span class="font-bold text-xl font-morn">
 						{#if show}

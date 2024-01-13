@@ -3,6 +3,7 @@
 		ChartConfiguration,
 		ChartConfigurationCustomTypesPerDataset,
 	} from 'chart.js';
+	import defer from 'chartjs-plugin-deferred';
 	import { enUS } from 'date-fns/locale';
 
 	import { COLOURS, COLOURS_OPAQUE } from '$lib/constants';
@@ -15,7 +16,6 @@
 	export let dataset: string;
 	export let hideLegend = false;
 	export let timeSeries = false;
-	export let animate = false;
 	export let stacked = false;
 	export let yLabel: string | undefined = undefined;
 
@@ -31,10 +31,18 @@
 			labels,
 			datasets: [],
 		},
+		plugins: [defer],
 		options: {
 			responsive: true,
 			borderColor: 'rgba(0, 0, 0, 0.5)',
+			animation: {
+				duration: 2_500,
+			},
 			plugins: {
+				deferred: {
+					yOffset: '50%',
+					delay: 0,
+				},
 				legend: {
 					labels: {
 						color: 'white',
@@ -68,7 +76,7 @@
 					},
 					type: type === 'radar' ? 'radialLinear' : 'linear',
 					stacked,
-					display: type !== 'pie',
+					display: type !== 'pie' && type !== 'radar',
 					title: {
 						display: !!yLabel,
 						text: yLabel,
@@ -94,21 +102,26 @@
 					},
 					display: type !== 'pie' && type !== 'radar',
 				},
+				r: type === 'radar' ? {
+					ticks: {
+						color: 'white',
+						backdropColor: 'transparent',
+						z: 10,
+					},
+				} : undefined,
 			},
 			datasets: {
 				line: {
 					fill: true,
-					animations: animate
-						? {
-							tension: {
-								duration: 3000,
-								easing: 'easeInOutQuad',
-								from: 0.4,
-								to: 0.5,
-								loop: true,
-							},
-						}
-						: undefined,
+					animations: {
+						tension: {
+							duration: 3000,
+							easing: 'easeInOutQuad',
+							from: 0.4,
+							to: 0.5,
+							loop: true,
+						},
+					},
 				},
 			},
 		},

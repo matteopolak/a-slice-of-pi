@@ -85,6 +85,9 @@ devDependencies:
   autoprefixer:
     specifier: ^10.4.16
     version: 10.4.16(postcss@8.4.33)
+  chartjs-plugin-deferred:
+    specifier: ^2.0.0
+    version: 2.0.0(chart.js@4.4.1)
   dotenv:
     specifier: ^16.3.1
     version: 16.3.1
@@ -742,7 +745,6 @@ packages:
 
   /@kurkle/color@0.3.2:
     resolution: {integrity: sha512-fuscdXJ9G1qb7W8VdHi+IwRqij3lBkosAm4ydQtEmbY58OzHXqQhvlxqEkoz0yssNVn38bcpRWgA9PP+OGoisw==}
-    dev: false
 
   /@melt-ui/svelte@0.68.0(svelte@4.2.8):
     resolution: {integrity: sha512-/QvA98hnYEodZtHJ71+ocum/WWp30hVNt3F8uiZKnNYwZDaiQYjlyR9AaGKYcZLCe6R68op1mfCzc0kTzJilyA==}
@@ -1538,7 +1540,6 @@ packages:
     engines: {pnpm: '>=7'}
     dependencies:
       '@kurkle/color': 0.3.2
-    dev: false
 
   /chartjs-adapter-date-fns@3.0.0(chart.js@4.4.1)(date-fns@3.2.0):
     resolution: {integrity: sha512-Rs3iEB3Q5pJ973J93OBTpnP7qoGwvq3nUnoMdtxO+9aoJof7UFcRbWcIDteXuYd1fgAvct/32T9qaLyLuZVwCg==}
@@ -1549,6 +1550,14 @@ packages:
       chart.js: 4.4.1
       date-fns: 3.2.0
     dev: false
+
+  /chartjs-plugin-deferred@2.0.0(chart.js@4.4.1):
+    resolution: {integrity: sha512-jq6b8Wt23WS6zxiX8oVB1MXq4uaJX2KGTyiqnq6xo4ctZPgFkT/FuIEKpJjsF1WkYv7ZQrqrrRg1fLw6O5ZEfQ==}
+    peerDependencies:
+      chart.js: '>= 3.0.0'
+    dependencies:
+      chart.js: 4.4.1
+    dev: true
 
   /chokidar@3.5.3:
     resolution: {integrity: sha512-Dr3sfKRP6oTcjf2JmUmFJfeVMvXBdegxB0iVQ5eb2V10uFJUCAS8OByZdVAyVb8xXNz3GjjTgj9kLWsZTqE6kw==}

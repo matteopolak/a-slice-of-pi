@@ -160,7 +160,6 @@
 				value={d => d.revenue}
 				hideLegend
 				timeSeries
-				animate
 				yLabel="Revenue ($)"
 			/>
 		</div>
@@ -194,7 +193,6 @@
 				dataset={pizzaKey?.value === 'type'
 					? 'Orders by store by pizza type'
 					: 'Orders by store by pizza size'}
-				animate
 				labels={pizzaKey?.value === 'type'
 					? ['Cheese', 'Pepperoni', 'Deluxe', 'Hawaiian', 'Meatlovers']
 					: ['Small', 'Medium', 'Large']}
@@ -212,7 +210,6 @@
 			label={d => d.timestamp}
 			value={d => d.revenue}
 			timeSeries
-			animate
 			stacked
 			yLabel="Revenue ($)"
 		/>

@@ -24,6 +24,7 @@
 		"@typescript-eslint/eslint-plugin": "^6.0.0",
 		"@typescript-eslint/parser": "^6.0.0",
 		"autoprefixer": "^10.4.16",
+		"chartjs-plugin-deferred": "^2.0.0",
 		"dotenv": "^16.3.1",
 		"drizzle-kit": "^0.20.10",
 		"eslint": "^8.56.0",
