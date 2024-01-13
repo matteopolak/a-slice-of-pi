@@ -103,7 +103,7 @@
 								tension: {
 									duration: 3000,
 									easing: 'easeInOutQuad',
-									from: 0.3,
+									from: 0.4,
 									to: 0.5,
 									loop: true,
 								},
@@ -125,17 +125,44 @@
 					pointRadius: 5,
 				},
 			];
-		} else if (type === 'line' || type === 'radar') {
+		} else if (type === 'line') {
+			// get all possible values of x so we can fill in 0s for missing values
+			const x = new Map<string, Map<string, number>>();
+
+			for (const [k, v] of Object.entries(data)) {
+				for (const d of v) {
+					const l = label(d);
+
+					(x.get(l) ?? x.set(l, new Map()).get(l)!).set(k, value(d));
+				}
+			}
+
+			const labels = Array.from(x.keys()).sort();
+
 			// @ts-expect-error - the bubble chart is not in use here
-			options.data.datasets = Object.entries(data).map(([k, v], i) => ({
-				label: k,
-				data: v.map(d => ({
-					x: labels.length ? labels.indexOf(label(d)) : label(d),
-					[type === 'radar' ? 'r' : 'y']: value(d),
-				})),
-				parsing: labels.length === 0,
-				backgroundColor: stacked ? COLOURS[i] : COLOURS_OPAQUE[i],
-			}));
+			options.data.datasets = Object.entries(data).map(([k], i) => {
+				return {
+					label: k,
+					data: labels.map(l => ({
+						x: l,
+						y: x.get(l)?.get(k) ?? 0,
+					})),
+					backgroundColor: stacked ? COLOURS[i] : COLOURS_OPAQUE[i],
+				};
+			});
+		} else if (type === 'radar') {
+			// @ts-expect-error - the bubble chart is not in use here
+			options.data.datasets = Object.entries(data).map(([k, v], i) => {
+				return {
+					label: k,
+					data: v.map(d => ({
+						x: labels.length ? labels.indexOf(label(d)) : label(d),
+						y: value(d),
+					})),
+					parsing: labels.length === 0,
+					backgroundColor: stacked ? COLOURS[i] : COLOURS_OPAQUE[i],
+				};
+			});
 		}
 
 		options = options;
