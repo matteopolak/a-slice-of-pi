@@ -140,29 +140,25 @@
 			const labels = Array.from(x.keys()).sort();
 
 			// @ts-expect-error - the bubble chart is not in use here
-			options.data.datasets = Object.entries(data).map(([k], i) => {
-				return {
-					label: k,
-					data: labels.map(l => ({
-						x: l,
-						y: x.get(l)?.get(k) ?? 0,
-					})),
-					backgroundColor: stacked ? COLOURS[i] : COLOURS_OPAQUE[i],
-				};
-			});
+			options.data.datasets = Object.entries(data).map(([k], i) => ({
+				label: k,
+				data: labels.map(l => ({
+					x: l,
+					y: x.get(l)?.get(k) ?? 0,
+				})),
+				backgroundColor: stacked ? COLOURS[i] : COLOURS_OPAQUE[i],
+			}));
 		} else if (type === 'radar') {
 			// @ts-expect-error - the bubble chart is not in use here
-			options.data.datasets = Object.entries(data).map(([k, v], i) => {
-				return {
-					label: k,
-					data: v.map(d => ({
-						x: labels.length ? labels.indexOf(label(d)) : label(d),
-						y: value(d),
-					})),
-					parsing: labels.length === 0,
-					backgroundColor: stacked ? COLOURS[i] : COLOURS_OPAQUE[i],
-				};
-			});
+			options.data.datasets = Object.entries(data).map(([k, v], i) => ({
+				label: k,
+				data: v.map(d => ({
+					x: labels.length ? labels.indexOf(label(d)) : label(d),
+					r: value(d),
+				})),
+				parsing: labels.length === 0,
+				backgroundColor: stacked ? COLOURS[i] : COLOURS_OPAQUE[i],
+			}));
 		}
 
 		options = options;
