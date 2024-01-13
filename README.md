@@ -1,5 +1,5 @@
 <p align="center">
-  <img height="200" src="static/favicon.png">
+  <img height="200" src="assets/logo.png">
 </p>
 
 <h1 align="center">a slice of pi</h1>

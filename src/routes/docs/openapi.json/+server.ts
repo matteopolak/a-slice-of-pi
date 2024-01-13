@@ -12,7 +12,7 @@ const openApiDocument = generateOpenApiDocument(app, {
 	baseUrl: PUBLIC_BASE_URL,
 	// @ts-expect-error - defined in Redoc spec
 	'x-logo': {
-		url: '/favicon.png',
+		url: '/favicon.svg',
 		altText: 'a slice of pi Logo',
 	},
 	license: {
