@@ -43,10 +43,10 @@ sequenceDiagram
   participant S as Server
   participant D as Database
 
-  C->>+S: get page
-  S-->>-C: content with empty charts
-  C->>+S: load chart data
-  S->>+D: get chart data
+  C->>+S: get page content
+  S-->>-C: page content with no data
+  C->>+S: fetch chart data
+  S->>+D: aggregate chart data
   D-->>-S: chart data
   S-->>-C: chart data
 ```
