@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
+
 	import GitHub from '~icons/bxl/github';
 	import Api from '~icons/ic/baseline-api';
 

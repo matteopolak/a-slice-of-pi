@@ -1,10 +1,11 @@
 <script lang="ts">
-	import Chart from 'chart.js/auto';
 	import 'chartjs-adapter-date-fns';
+
 	import type {
 		ChartConfiguration,
 		ChartConfigurationCustomTypesPerDataset,
 	} from 'chart.js';
+	import Chart from 'chart.js/auto';
 	import { onMount } from 'svelte';
 
 	export let options:

@@ -1,16 +1,15 @@
 <script lang="ts">
-	import Countup from 'svelte-countup';
-
-	import { trpc } from '$lib/client';
-	import type { PizzaSize, PizzaType, Range } from '$lib/server/schema';
-	import Chart from '$lib/components/chart/Chart.svelte';
-	import DateRangePicker from '$lib/components/bits/date-range-picker/DateRangePicker.svelte';
 	import type { DateRange, Selected } from 'bits-ui';
-	import Select from '$lib/components/bits/select/Select.svelte';
+	import Countup from 'svelte-countup';
 
 	import Pizza from '~icons/ic/baseline-local-pizza';
 	import Ruler from '~icons/mdi/ruler';
+	import { trpc } from '$lib/client';
+	import DateRangePicker from '$lib/components/bits/date-range-picker/DateRangePicker.svelte';
+	import Select from '$lib/components/bits/select/Select.svelte';
+	import Chart from '$lib/components/chart/Chart.svelte';
 	import { PIZZA_SIZE_PRETTY } from '$lib/constants';
+	import type { PizzaSize, PizzaType, Range } from '$lib/server/schema';
 
 	let range: Range = {
 		start: new Date(Date.UTC(2023, 0, 1)),

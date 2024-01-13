@@ -1,7 +1,8 @@
 <script>
-	import { browser } from '$app/environment';
 	import { RedocStandalone } from 'redoc-svelte';
 	import { onDestroy, onMount } from 'svelte';
+
+	import { browser } from '$app/environment';
 
 	onMount(() => {
 		document.documentElement.classList.add('bg-white', 'min-h-screen');

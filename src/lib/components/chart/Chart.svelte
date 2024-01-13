@@ -1,11 +1,11 @@
 <script lang="ts" generics="T">
-	import { COLOURS, COLOURS_OPAQUE } from '$lib/constants';
-
 	import type {
 		ChartConfiguration,
 		ChartConfigurationCustomTypesPerDataset,
 	} from 'chart.js';
 	import { enUS } from 'date-fns/locale';
+
+	import { COLOURS, COLOURS_OPAQUE } from '$lib/constants';
 
 	import Chart from './RawChart.svelte';
 
@@ -100,14 +100,14 @@
 					fill: true,
 					animations: animate
 						? {
-								tension: {
-									duration: 3000,
-									easing: 'easeInOutQuad',
-									from: 0.4,
-									to: 0.5,
-									loop: true,
-								},
-							}
+							tension: {
+								duration: 3000,
+								easing: 'easeInOutQuad',
+								from: 0.4,
+								to: 0.5,
+								loop: true,
+							},
+						}
 						: undefined,
 				},
 			},

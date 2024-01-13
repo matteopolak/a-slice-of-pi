@@ -1,9 +1,9 @@
 <script lang="ts" generics="T">
-	import type { ComponentType, SvelteComponent } from 'svelte';
 	import { Select, type Selected } from 'bits-ui';
-	import { flyAndScale } from '$lib/utils';
+	import type { ComponentType, SvelteComponent } from 'svelte';
 
 	import Check from '~icons/ic/baseline-check';
+	import { flyAndScale } from '$lib/utils';
 
 	export let selected: Selected<T>[] | Selected<T> = [];
 

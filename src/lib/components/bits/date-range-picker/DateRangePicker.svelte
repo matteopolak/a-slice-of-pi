@@ -1,10 +1,10 @@
 <script lang="ts">
-	import { DateRangePicker, type DateRange } from 'bits-ui';
-	import { flyAndScale } from '$lib/utils';
+	import { type DateRange, DateRangePicker } from 'bits-ui';
 
+	import CalendarBlank from '~icons/ic/baseline-calendar-today';
 	import CaretLeft from '~icons/ic/baseline-chevron-left';
 	import CaretRight from '~icons/ic/baseline-chevron-right';
-	import CalendarBlank from '~icons/ic/baseline-calendar-today';
+	import { flyAndScale } from '$lib/utils';
 
 	export let value: DateRange | undefined = undefined;
 </script>

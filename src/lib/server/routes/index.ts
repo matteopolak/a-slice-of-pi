@@ -1,10 +1,11 @@
-import { procedure, router } from '$lib/server/trpc';
+import { and, count, countDistinct, desc, eq, gte, inArray, lt, type SQL, sum } from 'drizzle-orm';
 import { z } from 'zod';
-import { PizzaSize, PizzaType, Range, ReviewSentiment } from '$lib/server/schema';
-import { order, orderItem, pricing, review } from '$lib/server/db/schema';
+
 import { db } from '$lib/server/db';
-import { type SQL, and, count, eq, gte, inArray, lt, sum, desc, countDistinct } from 'drizzle-orm';
+import { order, orderItem, pricing, review } from '$lib/server/db/schema';
 import { averageYearMonth, extractYearMonth } from '$lib/server/db/util';
+import { PizzaSize, PizzaType, Range, ReviewSentiment } from '$lib/server/schema';
+import { procedure, router } from '$lib/server/trpc';
 
 export const app = router({
 	reviewsBySentiment: procedure
@@ -15,7 +16,7 @@ export const app = router({
 				description: 'Gets the number of reviews by sentiment.',
 				tags: ['agg'],
 				path: '/agg/reviews/sentiment',
-			}
+			},
 		})
 		.input(Range.optional())
 		.output(z.object({
@@ -33,7 +34,7 @@ export const app = router({
 			if (input) {
 				query.where(and(
 					gte(review.createdAt, input.start),
-					lt(review.createdAt, input.end)
+					lt(review.createdAt, input.end),
 				));
 			}
 
@@ -50,14 +51,14 @@ export const app = router({
 				description: 'Gets the number of orders by store.',
 				tags: ['agg'],
 				path: '/agg/orders/store',
-			}
+			},
 		})
 		.input(z.object({
 			pizzaType: PizzaType.array(),
 			pizzaSize: PizzaSize.array(),
 		})
 			.merge(Range)
-			.partial()
+			.partial(),
 		)
 		.output(z.object({
 			store: z.string(),
@@ -84,7 +85,7 @@ export const app = router({
 			if (input.start && input.end) {
 				filters.push(and(
 					gte(order.createdAt, input.start),
-					lt(order.createdAt, input.end)
+					lt(order.createdAt, input.end),
 				)!);
 			}
 
@@ -106,7 +107,7 @@ export const app = router({
 				description: 'Gets the total revenue.',
 				tags: ['agg'],
 				path: '/agg/revenue/total',
-			}
+			},
 		})
 		.input(Range)
 		.output(z.number())
@@ -115,7 +116,7 @@ export const app = router({
 				.select({
 					// since each order_item represents one pizza,
 					// summing the pricing.price column will give the total
-					total: sum(pricing.price).mapWith(parseInt)
+					total: sum(pricing.price).mapWith(parseInt),
 				})
 				.from(orderItem)
 				// join with "order" so we can filter by date
@@ -127,7 +128,7 @@ export const app = router({
 				))
 				.where(and(
 					gte(order.createdAt, input.start),
-					lt(order.createdAt, input.end)
+					lt(order.createdAt, input.end),
 				));
 
 			return rows[0].total ?? 0;
@@ -140,7 +141,7 @@ export const app = router({
 				description: 'Gets the revenue by month.',
 				tags: ['agg'],
 				path: '/agg/revenue/month',
-			}
+			},
 		})
 		.input(Range.optional())
 		.output(z.object({
@@ -163,7 +164,7 @@ export const app = router({
 			if (input) {
 				query.where(and(
 					gte(order.createdAt, input.start),
-					lt(order.createdAt, input.end)
+					lt(order.createdAt, input.end),
 				));
 			}
 
@@ -180,7 +181,7 @@ export const app = router({
 				description: 'Gets the revenue by store per month.',
 				tags: ['agg'],
 				path: '/agg/revenue/store',
-			}
+			},
 		})
 		.input(Range.optional())
 		.output(z.record(z.string(), z.object({
@@ -203,7 +204,7 @@ export const app = router({
 			if (input) {
 				query.where(and(
 					gte(order.createdAt, input.start),
-					lt(order.createdAt, input.end)
+					lt(order.createdAt, input.end),
 				));
 			}
 
@@ -230,7 +231,7 @@ export const app = router({
 				description: 'Gets the number of orders by store by pizza.',
 				tags: ['agg'],
 				path: '/agg/orders/store/pizza',
-			}
+			},
 		})
 		.input(z.object({
 			key: z.enum(['type', 'size']),
@@ -248,7 +249,7 @@ export const app = router({
 			if (input.start && input.end) {
 				query.where(and(
 					gte(order.createdAt, input.start),
-					lt(order.createdAt, input.end)
+					lt(order.createdAt, input.end),
 				));
 			}
 
@@ -267,7 +268,6 @@ export const app = router({
 				return groups;
 			}, {} as Record<string, { x: string, y: number }[]>);
 		}),
-
 });
 
 export default app;

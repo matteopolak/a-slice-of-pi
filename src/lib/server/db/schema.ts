@@ -49,6 +49,6 @@ export const pricing = pgTable('pricing', {
 	price: integer('price').notNull(),
 }, table => {
 	return {
-		typeSizePk: primaryKey({ columns: [table.type, table.size] })
+		typeSizePk: primaryKey({ columns: [table.type, table.size] }),
 	};
 });
