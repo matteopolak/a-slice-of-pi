@@ -45,7 +45,7 @@
 
 <div class="grid lg:grid-cols-7 gap-4">
 	<div
-		class="p-3 justify-center place-items-center flex flex-row text-4xl bg-dark-4 rounded-3xl gap-4 lg:col-span-7"
+		class="layout-item p-3 justify-center place-items-center flex flex-row text-4xl gap-4 lg:col-span-7"
 	>
 		<span> Revenue </span>
 
@@ -65,7 +65,7 @@
 		</div>
 	</div>
 
-	<div class="bg-dark-4 rounded-3xl p-8 lg:col-span-3 grid place-items-center">
+	<div class="layout-item p-8 lg:col-span-3 grid place-items-center">
 		<div class="h-full w-full">
 			<Chart
 				data={trpc.reviewsBySentiment.query(range)}
@@ -78,7 +78,7 @@
 	</div>
 
 	<div
-		class="bg-dark-4 rounded-3xl p-8 lg:col-span-4 grid place-items-center gap-4"
+		class="layout-item p-8 lg:col-span-4 grid place-items-center gap-4"
 	>
 		<div class="h-full w-full">
 			<Chart
@@ -150,7 +150,7 @@
 		</div>
 	</div>
 
-	<div class="bg-dark-4 rounded-3xl p-8 lg:col-span-5 grid place-items-center">
+	<div class="layout-item p-8 lg:col-span-5 grid place-items-center">
 		<div class="w-full">
 			<Chart
 			data={trpc.revenueByMonth.query(range)}
@@ -166,7 +166,7 @@
 	</div>
 
 	<div
-		class="bg-dark-4 rounded-3xl p-8 lg:col-span-2 gap-4 grid place-items-center"
+		class="layout-item p-8 lg:col-span-2 gap-4 grid place-items-center"
 	>
 		<div class="w-full">
 			<Chart
@@ -206,7 +206,7 @@
 		</div>
 	</div>
 
-	<div class="w-full bg-dark-4 rounded-3xl p-8 lg:col-span-7 grid place-items-center min-w-0">
+	<div class="layout-item w-full p-8 lg:col-span-7 grid place-items-center">
 		<Chart
 			data={trpc.revenueByStoreByMonth.query(range)}
 			type="line"
@@ -219,3 +219,9 @@
 		/>
 	</div>
 </div>
+
+<style>
+	.layout-item {
+		@apply border border-border bg-background/75 backdrop-blur rounded-3xl;
+	}
+</style>
