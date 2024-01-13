@@ -129,7 +129,7 @@
 	}
 
 	.chart-item {
-		@apply theme-item min-h-96;
+		@apply theme-item min-h-96 h-full;
 	}
 }
 
