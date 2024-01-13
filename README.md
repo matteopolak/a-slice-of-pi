@@ -28,6 +28,7 @@ to view charts about various statistics aggregated from the fictional pizza plac
 - [x] API documentation
 - [x] Chart and page animations
 - [x] Nice header and cohesive design
+- [x] Infinite scrolling of reviews with pagination
 
 ## Major Parts
 
