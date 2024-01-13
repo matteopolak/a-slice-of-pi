@@ -39,15 +39,13 @@
 	}
 </script>
 
-<div class="flex flex-row flex-wrap gap-4 justify-center w-full">
-	<div class="w-full max-w-lg">
-		<DateRangePicker bind:value />
-	</div>
+<div class="container max-w-xl">
+	<DateRangePicker bind:value />
 </div>
 
-<div class="dashboard overflow-auto">
+<div class="grid lg:grid-cols-7 gap-4">
 	<div
-		class="p-3 justify-center place-items-center flex flex-row text-4xl bg-dark-4 rounded-3xl gap-4"
+		class="p-3 justify-center place-items-center flex flex-row text-4xl bg-dark-4 rounded-3xl gap-4 lg:col-span-7"
 	>
 		<span> Revenue </span>
 
@@ -67,8 +65,8 @@
 		</div>
 	</div>
 
-	<div class="grid lg:grid-cols-5 gap-4 max-w-full">
-		<div class="h-full bg-dark-4 rounded-3xl p-8 lg:col-span-2">
+	<div class="bg-dark-4 rounded-3xl p-8 lg:col-span-3 grid place-items-center">
+		<div class="h-full w-full">
 			<Chart
 				data={trpc.reviewsBySentiment.query(range)}
 				type="pie"
@@ -77,62 +75,12 @@
 				value={d => d.count}
 			/>
 		</div>
+	</div>
 
-		<div
-			class="h-full bg-dark-4 rounded-3xl p-8 lg:col-span-3 flex flex-col gap-4"
-		>
-			<div class="grid md:grid-cols-2 gap-2">
-				<Select
-					placeholder="Filter by pizza size"
-					icon={Ruler}
-					multiple
-					bind:selected={sizes}
-					options={[
-						{
-							label: 'Small',
-							value: 'S',
-						},
-						{
-							label: 'Medium',
-							value: 'M',
-						},
-						{
-							label: 'Large',
-							value: 'L',
-						},
-					]}
-				/>
-
-				<Select
-					placeholder="Filter by pizza type"
-					icon={Pizza}
-					multiple
-					bind:selected={types}
-					options={[
-						{
-							label: 'Cheese',
-							value: 'Cheese',
-						},
-						{
-							label: 'Pepperoni',
-							value: 'Pepperoni',
-						},
-						{
-							label: 'Deluxe',
-							value: 'Deluxe',
-						},
-						{
-							label: 'Hawaiian',
-							value: 'Hawaiian',
-						},
-						{
-							label: 'Meatlovers',
-							value: 'Meatlovers',
-						},
-					]}
-				/>
-			</div>
-
+	<div
+		class="bg-dark-4 rounded-3xl p-8 lg:col-span-4 grid place-items-center gap-4"
+	>
+		<div class="h-full w-full">
 			<Chart
 				data={trpc.ordersByStore.query({
 					start: range.start,
@@ -148,41 +96,79 @@
 				yLabel="Orders"
 			/>
 		</div>
-	</div>
 
-	<div class="grid lg:grid-cols-3 gap-4 max-w-full">
-		<div class="w-full h-full bg-dark-4 rounded-3xl p-8 lg:col-span-2">
-			<Chart
-				data={trpc.revenueByMonth.query(range)}
-				type="line"
-				dataset="Revenue by month"
-				label={d => d.timestamp}
-				value={d => d.revenue}
-				hideLegend
-				timeSeries
-				yLabel="Revenue ($)"
-			/>
-		</div>
-
-		<div
-			class="w-full h-full bg-dark-4 rounded-3xl p-8 lg:col-span-1 flex flex-col gap-4"
-		>
+		<div class="grid lg:grid-cols-2 gap-2 mt-auto">
 			<Select
-				placeholder="Select aggregation"
-				icon={Pizza}
-				bind:selected={pizzaKey}
+				placeholder="Filter by pizza size"
+				icon={Ruler}
+				multiple
+				bind:selected={sizes}
 				options={[
 					{
-						label: 'Pizza Type',
-						value: 'type',
+						label: 'Small',
+						value: 'S',
 					},
 					{
-						label: 'Pizza Size',
-						value: 'size',
+						label: 'Medium',
+						value: 'M',
+					},
+					{
+						label: 'Large',
+						value: 'L',
 					},
 				]}
 			/>
 
+			<Select
+				placeholder="Filter by pizza type"
+				icon={Pizza}
+				multiple
+				bind:selected={types}
+				options={[
+					{
+						label: 'Cheese',
+						value: 'Cheese',
+					},
+					{
+						label: 'Pepperoni',
+						value: 'Pepperoni',
+					},
+					{
+						label: 'Deluxe',
+						value: 'Deluxe',
+					},
+					{
+						label: 'Hawaiian',
+						value: 'Hawaiian',
+					},
+					{
+						label: 'Meatlovers',
+						value: 'Meatlovers',
+					},
+				]}
+			/>
+		</div>
+	</div>
+
+	<div class="bg-dark-4 rounded-3xl p-8 lg:col-span-5 grid place-items-center">
+		<div class="w-full">
+			<Chart
+			data={trpc.revenueByMonth.query(range)}
+			type="line"
+			dataset="Revenue by month"
+			label={d => d.timestamp}
+			value={d => d.revenue}
+			hideLegend
+			timeSeries
+			yLabel="Revenue ($)"
+		/>
+		</div>
+	</div>
+
+	<div
+		class="bg-dark-4 rounded-3xl p-8 lg:col-span-2 gap-4 grid place-items-center"
+	>
+		<div class="w-full">
 			<Chart
 				data={trpc.ordersByStoreByPizza.query({
 					start: range.start,
@@ -200,9 +186,27 @@
 				value={d => d.y}
 			/>
 		</div>
+
+		<div class="flex">
+			<Select
+				placeholder="Select aggregation"
+				icon={Pizza}
+				bind:selected={pizzaKey}
+				options={[
+					{
+						label: 'Pizza Type',
+						value: 'type',
+					},
+					{
+						label: 'Pizza Size',
+						value: 'size',
+					},
+				]}
+			/>
+		</div>
 	</div>
 
-	<div class="w-full h-full bg-dark-4 rounded-3xl p-8">
+	<div class="w-full bg-dark-4 rounded-3xl p-8 lg:col-span-7 grid place-items-center min-w-0">
 		<Chart
 			data={trpc.revenueByStoreByMonth.query(range)}
 			type="line"
@@ -215,9 +219,3 @@
 		/>
 	</div>
 </div>
-
-<style>
-	.dashboard {
-		@apply flex flex-col gap-4;
-	}
-</style>

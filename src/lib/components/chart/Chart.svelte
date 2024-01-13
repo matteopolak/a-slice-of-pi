@@ -33,6 +33,8 @@
 		},
 		plugins: [defer],
 		options: {
+			maintainAspectRatio: false,
+			aspectRatio: type === 'pie' || type === 'radar' ? 1 : 2,
 			responsive: true,
 			borderColor: 'rgba(0, 0, 0, 0.5)',
 			animation: {
@@ -102,13 +104,17 @@
 					},
 					display: type !== 'pie' && type !== 'radar',
 				},
-				r: type === 'radar' ? {
-					ticks: {
-						color: 'white',
-						backdropColor: 'transparent',
-						z: 10,
-					},
-				} : undefined,
+				...(type === 'radar'
+					? {
+						r: {
+							ticks: {
+								color: 'white',
+								backdropColor: 'transparent',
+								z: 10,
+							},
+						},
+					}
+					: {}),
 			},
 			datasets: {
 				line: {
@@ -118,7 +124,7 @@
 							duration: 3000,
 							easing: 'easeInOutQuad',
 							from: 0.4,
-							to: 0.5,
+							to: 0.6,
 							loop: true,
 						},
 					},

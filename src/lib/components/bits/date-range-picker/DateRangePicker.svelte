@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { type DateRange, DateRangePicker } from 'bits-ui';
+	import { type DateRange,DateRangePicker } from 'bits-ui';
 
 	import CalendarBlank from '~icons/ic/baseline-calendar-today';
 	import CaretLeft from '~icons/ic/baseline-chevron-left';
