@@ -268,6 +268,41 @@ export const app = router({
 				return groups;
 			}, {} as Record<string, { x: string, y: number }[]>);
 		}),
+	reviews: procedure
+		.meta({
+			openapi: {
+				method: 'POST',
+				summary: 'Get reviews',
+				description: 'Gets the reviews.',
+				tags: ['agg'],
+				path: '/agg/reviews',
+			},
+		})
+		.input(Range.optional())
+		.output(z.object({
+			timestamp: z.string().datetime(),
+			sentiment: ReviewSentiment,
+		}).array())
+		.query(({ input }) => {
+			const query = db
+				.select({
+					timestamp: averageYearMonth(review.createdAt),
+					sentiment: review.sentiment,
+				})
+				.from(review);
+
+			if (input) {
+				query.where(and(
+					gte(review.createdAt, input.start),
+					lt(review.createdAt, input.end),
+				));
+			}
+
+			return query
+				// order by month
+				.orderBy(extractYearMonth(review.createdAt))
+				.groupBy(extractYearMonth(review.createdAt), review.sentiment);
+		}),
 });
 
 export default app;

@@ -45,7 +45,7 @@
 
 <div class="grid lg:grid-cols-7 gap-4">
 	<div
-		class="layout-item p-3 justify-center place-items-center flex flex-row text-4xl gap-4 lg:col-span-7"
+		class="layout-item !min-h-0 p-3 justify-center place-items-center flex flex-row text-4xl gap-4 lg:col-span-7"
 	>
 		<span> Revenue </span>
 
@@ -150,9 +150,8 @@
 		</div>
 	</div>
 
-	<div class="layout-item p-8 lg:col-span-5 grid place-items-center">
-		<div class="w-full">
-			<Chart
+	<div class="layout-item w-full p-8 lg:col-span-5 grid place-items-center">
+		<Chart
 			data={trpc.revenueByMonth.query(range)}
 			type="line"
 			dataset="Revenue by month"
@@ -162,7 +161,6 @@
 			timeSeries
 			yLabel="Revenue ($)"
 		/>
-		</div>
 	</div>
 
 	<div
@@ -222,6 +220,6 @@
 
 <style>
 	.layout-item {
-		@apply border border-border bg-background/75 backdrop-blur rounded-3xl;
+		@apply border border-border bg-background/75 backdrop-blur rounded-3xl min-h-96;
 	}
 </style>
