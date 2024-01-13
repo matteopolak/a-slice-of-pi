@@ -8,6 +8,7 @@
 	import DateRangePicker from '$lib/components/bits/date-range-picker/DateRangePicker.svelte';
 	import Select from '$lib/components/bits/select/Select.svelte';
 	import Chart from '$lib/components/chart/Chart.svelte';
+	import ReviewGrid from '$lib/components/ReviewGrid.svelte';
 	import { PIZZA_SIZE_PRETTY } from '$lib/constants';
 	import type { PizzaSize, PizzaType, Range } from '$lib/server/schema';
 
@@ -45,7 +46,7 @@
 
 <div class="grid lg:grid-cols-7 gap-4">
 	<div
-		class="layout-item !min-h-0 p-3 justify-center place-items-center flex flex-row text-4xl gap-4 lg:col-span-7"
+		class="chart-item !min-h-0 p-3 justify-center place-items-center flex flex-row text-4xl gap-4 lg:col-span-7"
 	>
 		<span> Revenue </span>
 
@@ -65,7 +66,7 @@
 		</div>
 	</div>
 
-	<div class="layout-item p-8 lg:col-span-3 grid place-items-center">
+	<div class="chart-item p-8 lg:col-span-3 grid place-items-center">
 		<div class="h-full w-full">
 			<Chart
 				data={trpc.reviewsBySentiment.query(range)}
@@ -78,7 +79,7 @@
 	</div>
 
 	<div
-		class="layout-item p-8 lg:col-span-4 grid place-items-center gap-4"
+		class="chart-item p-8 lg:col-span-4 grid place-items-center gap-4"
 	>
 		<div class="h-full w-full">
 			<Chart
@@ -150,7 +151,7 @@
 		</div>
 	</div>
 
-	<div class="layout-item w-full p-8 lg:col-span-5 grid place-items-center">
+	<div class="chart-item w-full p-8 lg:col-span-5 grid place-items-center">
 		<Chart
 			data={trpc.revenueByMonth.query(range)}
 			type="line"
@@ -164,7 +165,7 @@
 	</div>
 
 	<div
-		class="layout-item p-8 lg:col-span-2 gap-4 grid place-items-center"
+		class="chart-item p-8 lg:col-span-2 gap-4 grid place-items-center"
 	>
 		<div class="w-full">
 			<Chart
@@ -204,7 +205,7 @@
 		</div>
 	</div>
 
-	<div class="layout-item w-full p-8 lg:col-span-7 grid place-items-center">
+	<div class="chart-item w-full p-8 lg:col-span-7 grid place-items-center">
 		<Chart
 			data={trpc.revenueByStoreByMonth.query(range)}
 			type="line"
@@ -216,10 +217,6 @@
 			yLabel="Revenue ($)"
 		/>
 	</div>
-</div>
 
-<style>
-	.layout-item {
-		@apply border border-border bg-background/75 backdrop-blur rounded-3xl min-h-96;
-	}
-</style>
+	<ReviewGrid class="lg:col-span-7" />
+</div>

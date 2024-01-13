@@ -4,7 +4,7 @@ import { z } from 'zod';
 import { db } from '$lib/server/db';
 import { order, orderItem, pricing, review } from '$lib/server/db/schema';
 import { averageYearMonth, extractYearMonth } from '$lib/server/db/util';
-import { PizzaSize, PizzaType, Range, ReviewSentiment } from '$lib/server/schema';
+import { PizzaSize, PizzaType, Range, Review, ReviewSentiment } from '$lib/server/schema';
 import { procedure, router } from '$lib/server/trpc';
 
 export const app = router({
@@ -274,34 +274,27 @@ export const app = router({
 				method: 'POST',
 				summary: 'Get reviews',
 				description: 'Gets the reviews.',
-				tags: ['agg'],
-				path: '/agg/reviews',
+				tags: ['review'],
+				path: '/reviews',
 			},
 		})
-		.input(Range.optional())
-		.output(z.object({
-			timestamp: z.string().datetime(),
-			sentiment: ReviewSentiment,
-		}).array())
+		.input(z.object({
+			page: z.number().int().nonnegative().default(0),
+		}))
+		.output(Review.array())
 		.query(({ input }) => {
-			const query = db
+			return db
 				.select({
-					timestamp: averageYearMonth(review.createdAt),
+					id: review.id,
 					sentiment: review.sentiment,
+					store: review.store,
+					message: review.message,
+					createdAt: review.createdAt,
 				})
-				.from(review);
-
-			if (input) {
-				query.where(and(
-					gte(review.createdAt, input.start),
-					lt(review.createdAt, input.end),
-				));
-			}
-
-			return query
-				// order by month
-				.orderBy(extractYearMonth(review.createdAt))
-				.groupBy(extractYearMonth(review.createdAt), review.sentiment);
+				.from(review)
+				.orderBy(desc(review.createdAt))
+				.offset(input.page * 15)
+				.limit(15);
 		}),
 });
 

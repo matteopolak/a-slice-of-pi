@@ -53,6 +53,7 @@
 		"pg": "^8.11.3",
 		"redoc-svelte": "^0.2.3",
 		"svelte-countup": "^0.2.6",
+		"svelte-time": "^0.8.2",
 		"trpc-openapi": "^1.2.0",
 		"trpc-sveltekit": "^3.5.22",
 		"unplugin-icons": "^0.18.2",

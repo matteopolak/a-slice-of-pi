@@ -123,6 +123,14 @@
 		@apply ml-[-50px] mt-[-4px];
 		content: counter(step);
 	}
+
+	.theme-item {
+		@apply border border-border bg-background/75 backdrop-blur rounded-3xl;
+	}
+
+	.chart-item {
+		@apply theme-item min-h-96;
+	}
 }
 
 @layer components {

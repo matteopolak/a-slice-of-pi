@@ -44,6 +44,9 @@ dependencies:
   svelte-countup:
     specifier: ^0.2.6
     version: 0.2.6(svelte@4.2.8)
+  svelte-time:
+    specifier: ^0.8.2
+    version: 0.8.2
   trpc-openapi:
     specifier: ^1.2.0
     version: 1.2.0(@trpc/server@10.45.0)(zod@3.22.4)
@@ -1729,6 +1732,10 @@ packages:
 
   /date-fns@3.2.0:
     resolution: {integrity: sha512-E4KWKavANzeuusPi0jUjpuI22SURAznGkx7eZV+4i6x2A+IZxAMcajgkvuDAU1bg40+xuhW1zRdVIIM/4khuIg==}
+    dev: false
+
+  /dayjs@1.11.10:
+    resolution: {integrity: sha512-vjAczensTgRcqDERK0SR2XMwsF/tSvnvlv6VcF2GIhg6Sx4yOIt/irsr1RDJsKiIyBzJDpCoXiWWq28MqH2cnQ==}
     dev: false
 
   /debug@4.3.4:
@@ -4296,6 +4303,12 @@ packages:
       svelte: 4.2.8
       typescript: 5.3.3
     dev: true
+
+  /svelte-time@0.8.2:
+    resolution: {integrity: sha512-sBLLrWMMInx5iidGlbtlCBAu8CzSixdqOkbhizdalULXBvYMPACp0GtzmyBLEa77hbaMVySZzApIaNG4B4OVmg==}
+    dependencies:
+      dayjs: 1.11.10
+    dev: false
 
   /svelte@4.2.8:
     resolution: {integrity: sha512-hU6dh1MPl8gh6klQZwK/n73GiAHiR95IkFsesLPbMeEZi36ydaXL/ZAb4g9sayT0MXzpxyZjR28yderJHxcmYA==}
