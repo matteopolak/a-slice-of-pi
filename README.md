@@ -4,6 +4,9 @@
 
 <h1 align="center">a slice of pi</h1>
 
+[![build status](https://github.com/matteopolak/a-slice-of-pi/actions/workflows/ci.yml/badge.svg)](.github/workflows/ci.yml)
+[![license](https://img.shields.io/github/license/matteopolak/a-slice-of-pi.svg)](LICENSE)
+
 **a slice of pi** is a web app created for the [OutStem Coding Challenge](https://github.com/AES-Outreach/Summer-2024-Coop-Interviews) that allows users
 to view charts about various statistics aggregated from the fictional pizza place of the same name.
 
