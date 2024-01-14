@@ -1,5 +1,5 @@
 <script lang="ts">
-	import Time from 'svelte-time';
+	import { formatDistanceToNow } from 'date-fns';
 
 	import { trpc } from '$lib/client';
 	import type { Range,ReviewSentiment } from '$lib/server/schema';
@@ -34,7 +34,11 @@
 
 			<p>{item.message}</p>
 
-			<Time relative timestamp={item.createdAt} class="mt-auto ml-auto text-sm" />
+			<span class="mt-auto ml-auto text-sm">
+				{formatDistanceToNow(item.createdAt, {
+					addSuffix: true,
+				})}
+			</span>
 		</div>
 
 		<svelte:fragment slot="loading">

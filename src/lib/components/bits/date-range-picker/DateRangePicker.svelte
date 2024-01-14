@@ -25,14 +25,14 @@
 						<DateRangePicker.Segment
 							type="start"
 							{part}
-							class="rounded-5px px-2 py-1 hover:bg-muted focus:bg-muted focus:text-foreground focus-visible:!ring-0 focus-visible:!ring-offset-0"
+							class="rounded-5px px-2 py-1 hover:bg-muted focus:bg-muted text-foreground focus-visible:!ring-0 focus-visible:!ring-offset-0"
 						>
 							{value}
 						</DateRangePicker.Segment>
 					{/if}
 				</div>
 			{/each}
-			<div aria-hidden class="px-1">-</div>
+			<div aria-hidden="true" class="px-1">-</div>
 			{#each segments.end as { part, value }}
 				<div class="inline-block select-none">
 					{#if part === 'literal'}
@@ -43,7 +43,7 @@
 						<DateRangePicker.Segment
 							type="end"
 							{part}
-							class="rounded-5px px-2 py-1 hover:bg-muted focus:bg-muted focus:text-foreground focus-visible:!ring-0 focus-visible:!ring-offset-0"
+							class="rounded-5px px-2 py-1 hover:bg-muted focus:bg-muted text-foreground focus-visible:!ring-0 focus-visible:!ring-offset-0"
 						>
 							{value}
 						</DateRangePicker.Segment>
@@ -51,7 +51,7 @@
 				</div>
 			{/each}
 			<DateRangePicker.Trigger
-				class="ml-auto inline-flex items-center justify-center rounded-[5px] transition-all sq-8 hover:bg-muted active:bg-dark-10"
+				class="ml-auto inline-flex items-center justify-center rounded-[5px] transition-all sq-8 hover:bg-muted active:bg-dark-10 text-foreground"
 			>
 				<CalendarBlank class="sq-5" />
 			</DateRangePicker.Trigger>

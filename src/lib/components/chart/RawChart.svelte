@@ -5,7 +5,24 @@
 		ChartConfiguration,
 		ChartConfigurationCustomTypesPerDataset,
 	} from 'chart.js';
-	import Chart from 'chart.js/auto';
+	import {
+		ArcElement,
+		BarController,
+		BarElement,
+		CategoryScale,
+		Chart,
+		Filler,
+		Legend,
+		LinearScale,
+		LineController,
+		LineElement,
+		PieController,
+		PointElement,
+		RadarController,
+		RadialLinearScale,
+		TimeSeriesScale,
+		Tooltip,
+	} from 'chart.js';
 	import { onMount } from 'svelte';
 
 	export let options:
@@ -16,6 +33,24 @@
 	let chart: Chart;
 
 	onMount(() => {
+		Chart.register(
+			LineController,
+			BarController,
+			PieController,
+			RadarController,
+			LinearScale,
+			TimeSeriesScale,
+			CategoryScale,
+			RadialLinearScale,
+			ArcElement,
+			BarElement,
+			PointElement,
+			LineElement,
+			Filler,
+			Tooltip,
+			Legend,
+		);
+
 		chart = new Chart(canvas, options);
 	});
 

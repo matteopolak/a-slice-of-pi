@@ -4,6 +4,7 @@
 	font-family: 'Morn DemiBold';
 	src: url('/fonts/morn-demibold.ttf') format('truetype');
 	font-weight: 600;
+	font-display: swap;
 }
 
 @tailwind base;

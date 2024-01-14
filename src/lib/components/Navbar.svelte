@@ -25,8 +25,8 @@
 	<div class="container px-4 max-w-7xl">
 		<div class="flex h-[70px] items-center justify-between gap-3">
 			<div class="flex items-center gap-1.5">
-				<a href="/" class="rounded-md flex flex-row place-items-center gap-2">
-					<img src="/favicon.webp" alt="Logo" class="sq-12" />
+				<a href="/" class="rounded-md flex flex-row place-items-center gap-2" title="Visit home of a slice of pie">
+					<enhanced:img src="../../../static/favicon.webp" alt="a slice of pie" class="sq-12" />
 
 					<span class="font-bold text-xl font-morn">
 						{#if show}
@@ -39,11 +39,11 @@
 			</div>
 
 			<div class="flex items-center gap-4">
-				<a href="/docs">
+				<a href="/docs" aria-label="Read API documentation">
 					<Api class="sq-6" />
 				</a>
 
-				<a href="https://github.com/matteopolak/a-slice-of-pi">
+				<a href="https://github.com/matteopolak/a-slice-of-pi" aria-label="View the website's source code on GitHub">
 					<GitHub class="sq-6" />
 				</a>
 			</div>
