@@ -33,7 +33,7 @@
 		},
 		plugins: [defer],
 		options: {
-			maintainAspectRatio: true,
+			maintainAspectRatio: false,
 			aspectRatio: type === 'pie' || type === 'radar' ? 1 : 2,
 			responsive: true,
 			borderColor: 'rgba(0, 0, 0, 0.5)',
