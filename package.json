@@ -43,6 +43,7 @@
 		"@iconify-json/bxl": "^1.1.10",
 		"@iconify-json/ic": "^1.1.17",
 		"@iconify-json/mdi": "^1.1.64",
+		"@internationalized/date": "^3.5.1",
 		"@trpc/client": "^10.45.0",
 		"@trpc/server": "^10.45.0",
 		"bits-ui": "^0.14.0",

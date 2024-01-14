@@ -20,8 +20,7 @@
 	});
 
 	$: if (chart) {
-		chart.data.labels = options.data.labels;
-		chart.data.datasets = options.data.datasets;
+		chart.data = options.data;
 		chart.update();
 	}
 </script>

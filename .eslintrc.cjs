@@ -33,7 +33,9 @@ module.exports = {
 	],
 	rules: {
 		'no-mixed-spaces-and-tabs': ['error', 'smart-tabs'],
-		indent: ['error', 'tab'],
+		indent: ['error', 'tab', {
+			SwitchCase: 1,
+		}],
 		quotes: ['error', 'single', { avoidEscape: true }],
 		'quote-props': ['error', 'as-needed'],
 		'comma-dangle': ['error', 'always-multiline'],

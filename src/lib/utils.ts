@@ -1,6 +1,8 @@
 import { cubicOut } from 'svelte/easing';
 import type { TransitionConfig } from 'svelte/transition';
 
+import type { ReviewSentiment } from './server/schema';
+
 type FlyAndScaleParams = {
 	y?: number;
 	start?: number;
@@ -45,4 +47,17 @@ export function flyAndScale(node: Element, params?: FlyAndScaleParams): Transiti
 		},
 		easing: cubicOut,
 	};
+}
+
+export function sentimentToBg(sentiment: ReviewSentiment) {
+	switch (sentiment) {
+		case 'delighted':
+			return 'bg-green-500';
+		case 'happy':
+			return 'bg-green-300';
+		case 'sad':
+			return 'bg-yellow-500';
+		case 'angry':
+			return 'bg-red-500';
+	}
 }

@@ -2,32 +2,27 @@
 	import Time from 'svelte-time';
 
 	import { trpc } from '$lib/client';
-	import type { ReviewSentiment } from '$lib/server/schema';
+	import type { Range,ReviewSentiment } from '$lib/server/schema';
+	import { sentimentToBg } from '$lib/utils';
 
 	import InfiniteScroll from './InfiniteScroll.svelte';
 
 	let className = '';
 
+	export let sentiments: ReviewSentiment[];
+	export let range: Range;
 	export { className as class };
-
-	function sentimentToBg(sentiment: ReviewSentiment) {
-		switch (sentiment) {
-		case 'delighted':
-			return 'bg-green-500';
-		case 'happy':
-			return 'bg-green-300';
-		case 'sad':
-			return 'bg-yellow-500';
-		case 'angry':
-			return 'bg-red-500';
-		}
-	}
 </script>
 
-<div class="reviews gap-4 {className}">
+<div class="reviews gap-2 {className}">
 	<InfiniteScroll
 		data={[]}
-		load={i => trpc.reviews.query({ page: i })}
+		load={i => trpc.reviews.query({
+			page: i,
+			sentiments,
+			start: range.start,
+			end: range.end,
+		})}
 		itemThreshold={15}
 		let:item
 	>

@@ -280,10 +280,13 @@ export const app = router({
 		})
 		.input(z.object({
 			page: z.number().int().nonnegative().default(0),
-		}))
+			sentiments: ReviewSentiment.array().optional(),
+		})
+			.merge(Range.partial()),
+		)
 		.output(Review.array())
 		.query(({ input }) => {
-			return db
+			const query = db
 				.select({
 					id: review.id,
 					sentiment: review.sentiment,
@@ -295,6 +298,26 @@ export const app = router({
 				.orderBy(desc(review.createdAt))
 				.offset(input.page * 15)
 				.limit(15);
+
+			const filters: SQL[] = [];
+
+			if (input.sentiments?.length) {
+				filters.push(inArray(review.sentiment, input.sentiments));
+			}
+
+			if (input.start && input.end) {
+				filters.push(and(
+					gte(review.createdAt, input.start),
+					lt(review.createdAt, input.end),
+				)!);
+			}
+
+			if (filters.length) {
+				query.where(and(...filters));
+			}
+
+
+			return query;
 		}),
 });
 

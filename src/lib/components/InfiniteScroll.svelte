@@ -12,10 +12,17 @@
 	let loading = false;
 	let index = data.length === 0 ? 0 : 1;
 	let shouldLoad = data.length === 0;
+	let ctx = 0;
 
 	async function next() {
 		loading = true;
+		
+		const localCtx = ++ctx;
 		const items = await load(index++);
+
+		if (localCtx !== ctx) {
+			return;
+		}
 
 		if (items.length < itemThreshold) {
 			done = true;
@@ -35,8 +42,21 @@
 		});
 	}
 
+	function onLoadChange() {
+		data = [];
+		done = false;
+		index = 0;
+
+		next();
+	}
+
 	$: if (shouldLoad && !loading && !done) {
 		next();
+	}
+
+	$: {
+		load;
+		onLoadChange();
 	}
 </script>
 

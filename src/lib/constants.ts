@@ -36,7 +36,7 @@ export const COLOURS = [
 	'#98DDCA',
 ];
 
-export const COLOURS_OPAQUE = COLOURS.map((c) => c + '80');
+export const COLOURS_OPAQUE = COLOURS.map((c) => c + 'e0');
 
 export const PIZZA_SIZE_PRETTY: Record<PizzaSize | string, string> = {
 	S: 'Small',
