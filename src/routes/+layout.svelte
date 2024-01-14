@@ -1,5 +1,5 @@
 <script>
-	import '../app.css';
+	import '../app.css?inline';
 
 	import { page } from '$app/stores';
 	import Navbar from '$lib/components/Navbar.svelte';

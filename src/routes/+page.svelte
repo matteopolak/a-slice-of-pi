@@ -1,4 +1,7 @@
 <script lang="ts">
+	// prevent content flicker
+	import '../app.css';
+
 	import { CalendarDate } from '@internationalized/date';
 	import type { DateRange } from 'bits-ui';
 
