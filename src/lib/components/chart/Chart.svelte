@@ -112,6 +112,7 @@
 								backdropColor: 'transparent',
 								z: 10,
 							},
+							min: 0,
 						},
 					}
 					: {}),
