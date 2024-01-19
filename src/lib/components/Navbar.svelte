@@ -34,7 +34,7 @@
 		<div class="flex h-[70px] items-center justify-between gap-3">
 			<div class="flex items-center gap-1.5">
 				<a href="/" class="rounded-md flex flex-row place-items-center gap-2" title="Visit home of a slice of pie">
-					<enhanced:img src="../../../static/favicon.webp" alt="a slice of pie" class="sq-12" />
+					<enhanced:img src="../../../static/favicon.webp" alt="Logo for a slice of pi" class="sq-12" />
 
 					<span class="font-bold text-xl font-morn">
 						{#if show}
