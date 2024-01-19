@@ -334,7 +334,7 @@ export const app = router({
 	stores: procedure
 		.meta({
 			openapi: {
-				method: 'GET',
+				method: 'POST',
 				summary: 'Get stores',
 				description: 'Gets the stores.',
 				tags: ['store'],
