@@ -8,7 +8,7 @@
 
 <div class="chart-item w-full p-8 lg:col-span-full grid place-items-center">
 	<Chart
-		data={trpc.revenueByStoreByMonth.query(range)}
+		data={trpc.revenueByStoreByMonth.query({ range })}
 		type="line"
 		dataset="Revenue by store per month (stacked)"
 		label={d => d.timestamp}

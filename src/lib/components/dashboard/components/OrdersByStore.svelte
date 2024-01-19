@@ -20,8 +20,7 @@
 		<div class="h-full w-full">
 			<Chart
 				data={trpc.ordersByStore.query({
-					start: range.start,
-					end: range.end,
+					range,
 					pizzaSize: sizes?.length ? sizes.map(s => s.value) : undefined,
 					pizzaType: types?.length ? types.map(s => s.value) : undefined,
 				})}

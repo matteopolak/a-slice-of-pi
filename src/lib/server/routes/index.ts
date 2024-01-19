@@ -4,7 +4,7 @@ import { z } from 'zod';
 import { db } from '$lib/server/db';
 import { order, orderItem, pricing, review } from '$lib/server/db/schema';
 import { averageYearMonth, extractYearMonth } from '$lib/server/db/util';
-import { PizzaSize, PizzaType, Range, Review, ReviewSentiment } from '$lib/server/schema';
+import { Order, PizzaSize, PizzaType, Range, Review, ReviewSentiment } from '$lib/server/schema';
 import { procedure, router } from '$lib/server/trpc';
 
 export const app = router({
@@ -18,7 +18,9 @@ export const app = router({
 				path: '/agg/reviews/sentiment',
 			},
 		})
-		.input(Range.optional())
+		.input(z.object({
+			range: Range.optional(),
+		}))
 		.output(z.object({
 			sentiment: ReviewSentiment,
 			count: z.number(),
@@ -31,10 +33,10 @@ export const app = router({
 				})
 				.from(review);
 
-			if (input) {
+			if (input.range) {
 				query.where(and(
-					gte(review.createdAt, input.start),
-					lt(review.createdAt, input.end),
+					gte(review.createdAt, input.range.start),
+					lt(review.createdAt, input.range.end),
 				));
 			}
 
@@ -56,8 +58,8 @@ export const app = router({
 		.input(z.object({
 			pizzaType: PizzaType.array(),
 			pizzaSize: PizzaSize.array(),
+			range: Range,
 		})
-			.merge(Range)
 			.partial(),
 		)
 		.output(z.object({
@@ -82,10 +84,10 @@ export const app = router({
 				filters.push(inArray(orderItem.size, input.pizzaSize));
 			}
 
-			if (input.start && input.end) {
+			if (input.range) {
 				filters.push(and(
-					gte(order.createdAt, input.start),
-					lt(order.createdAt, input.end),
+					gte(order.createdAt, input.range.start),
+					lt(order.createdAt, input.range.end),
 				)!);
 			}
 
@@ -109,7 +111,9 @@ export const app = router({
 				path: '/agg/revenue/total',
 			},
 		})
-		.input(Range)
+		.input(z.object({
+			range: Range,
+		}))
 		.output(z.number())
 		.query(async ({ input }) => {
 			const rows = await db
@@ -127,8 +131,8 @@ export const app = router({
 					eq(orderItem.type, pricing.type),
 				))
 				.where(and(
-					gte(order.createdAt, input.start),
-					lt(order.createdAt, input.end),
+					gte(order.createdAt, input.range.start),
+					lt(order.createdAt, input.range.end),
 				));
 
 			return rows[0].total ?? 0;
@@ -143,7 +147,9 @@ export const app = router({
 				path: '/agg/revenue/month',
 			},
 		})
-		.input(Range.optional())
+		.input(z.object({
+			range: Range.optional(),
+		}))
 		.output(z.object({
 			timestamp: z.string().datetime(),
 			revenue: z.number(),
@@ -161,10 +167,10 @@ export const app = router({
 					eq(orderItem.type, pricing.type),
 				));
 
-			if (input) {
+			if (input.range) {
 				query.where(and(
-					gte(order.createdAt, input.start),
-					lt(order.createdAt, input.end),
+					gte(order.createdAt, input.range.start),
+					lt(order.createdAt, input.range.end),
 				));
 			}
 
@@ -183,7 +189,9 @@ export const app = router({
 				path: '/agg/revenue/store',
 			},
 		})
-		.input(Range.optional())
+		.input(z.object({
+			range: Range.optional(),
+		}))
 		.output(z.record(z.string(), z.object({
 			revenue: z.number(),
 			timestamp: z.string().datetime(),
@@ -201,10 +209,10 @@ export const app = router({
 					eq(orderItem.type, pricing.type),
 				));
 
-			if (input) {
+			if (input.range) {
 				query.where(and(
-					gte(order.createdAt, input.start),
-					lt(order.createdAt, input.end),
+					gte(order.createdAt, input.range.start),
+					lt(order.createdAt, input.range.end),
 				));
 			}
 
@@ -235,7 +243,8 @@ export const app = router({
 		})
 		.input(z.object({
 			key: z.enum(['type', 'size']),
-		}).merge(Range.partial()))
+			range: Range.optional(),
+		}))
 		.output(z.record(z.string(), z.object({ x: z.string(), y: z.number() }).array()))
 		.query(async ({ input }) => {
 			const query = db.select({
@@ -246,10 +255,10 @@ export const app = router({
 				.from(orderItem)
 				.innerJoin(order, eq(orderItem.orderId, order.id));
 
-			if (input.start && input.end) {
+			if (input.range) {
 				query.where(and(
-					gte(order.createdAt, input.start),
-					lt(order.createdAt, input.end),
+					gte(order.createdAt, input.range.start),
+					lt(order.createdAt, input.range.end),
 				));
 			}
 
@@ -281,9 +290,9 @@ export const app = router({
 		.input(z.object({
 			page: z.number().int().nonnegative().default(0),
 			sentiments: ReviewSentiment.array().optional(),
-		})
-			.merge(Range.partial()),
-		)
+			stores: z.string().array().optional(),
+			range: Range.optional(),
+		}))
 		.output(Review.array())
 		.query(({ input }) => {
 			const query = db
@@ -305,10 +314,14 @@ export const app = router({
 				filters.push(inArray(review.sentiment, input.sentiments));
 			}
 
-			if (input.start && input.end) {
+			if (input.stores?.length) {
+				filters.push(inArray(review.store, input.stores));
+			}
+
+			if (input.range) {
 				filters.push(and(
-					gte(review.createdAt, input.start),
-					lt(review.createdAt, input.end),
+					gte(review.createdAt, input.range.start),
+					lt(review.createdAt, input.range.end),
 				)!);
 			}
 
@@ -316,8 +329,38 @@ export const app = router({
 				query.where(and(...filters));
 			}
 
-
 			return query;
+		}),
+	stores: procedure
+		.meta({
+			openapi: {
+				method: 'GET',
+				summary: 'Get stores',
+				description: 'Gets the stores.',
+				tags: ['store'],
+				path: '/stores',
+			},
+		})
+		.input(z.object({
+			range: Range.optional(),
+		}))
+		.output(Order.pick({ store: true }).array())
+		.query(({ input }) => {
+			const query = db
+				.selectDistinct({
+					store: review.store,
+				})
+				.from(review);
+
+			if (input.range) {
+				query.where(and(
+					gte(review.createdAt, input.range.start),
+					lt(review.createdAt, input.range.end),
+				));
+			}
+
+			return query
+				.orderBy(review.store);
 		}),
 });
 

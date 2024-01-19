@@ -34,11 +34,7 @@
 		}
 
 		tick().then(() => {
-			if (shouldLoad) {
-				next();
-			} else {
-				loading = false;
-			}
+			loading = false;
 		});
 	}
 

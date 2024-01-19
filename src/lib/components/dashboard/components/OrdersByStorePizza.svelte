@@ -22,8 +22,7 @@
 		<div class="w-full">
 			<Chart
 				data={trpc.ordersByStoreByPizza.query({
-					start: range.start,
-					end: range.end,
+					range,
 					key: pizzaKey?.value ?? 'type',
 				})}
 				type="radar"

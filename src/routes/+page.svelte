@@ -1,11 +1,8 @@
 <script lang="ts">
-	// prevent content flicker
-
-	import { CalendarDate } from '@internationalized/date';
 	import type { DateRange } from 'bits-ui';
 
-	import DateRangePicker from '$lib/components/bits/date-range-picker/DateRangePicker.svelte';
 	import Dashboard from '$lib/components/dashboard/Dashboard.svelte';
+	import Navbar from '$lib/components/Navbar.svelte';
 	import type { Range } from '$lib/server/schema';
 
 	let range: Range = {
@@ -13,10 +10,7 @@
 		end: new Date(Date.UTC(2024, 0, 1)),
 	};
 
-	let rawRange: DateRange = {
-		start: new CalendarDate(2023, 0, 0),
-		end: new CalendarDate(2024, 0, 0),
-	};
+	let rawRange: DateRange;
 
 	$: if (rawRange?.end && rawRange?.start) {
 		range = {
@@ -26,8 +20,8 @@
 	}
 </script>
 
-<div class="container max-w-xl">
-	<DateRangePicker bind:value={rawRange} />
-</div>
+<Navbar bind:rawRange />
 
-<Dashboard {range} />
+<div class="container grid w-full gap-6 lg:gap-8 max-w-7xl p-4 lg:p-8">
+	<Dashboard {range} />
+</div>

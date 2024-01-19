@@ -10,7 +10,9 @@
 	let className = '';
 
 	export let sentiments: ReviewSentiment[];
+	export let stores: string[];
 	export let range: Range;
+
 	export { className as class };
 </script>
 
@@ -20,8 +22,8 @@
 		load={i => trpc.reviews.query({
 			page: i,
 			sentiments,
-			start: range.start,
-			end: range.end,
+			stores,
+			range,
 		})}
 		itemThreshold={15}
 		let:item

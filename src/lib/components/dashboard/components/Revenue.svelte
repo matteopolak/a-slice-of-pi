@@ -4,8 +4,10 @@
 	import { trpc } from '$lib/client';
 
 	const revenue = trpc.totalRevenue.query({
-		start: new Date(2023, 0, 1),
-		end: new Date(2024, 0, 1),
+		range: {
+			start: new Date(2023, 0, 1),
+			end: new Date(2024, 0, 1),
+		},
 	});
 </script>
 
