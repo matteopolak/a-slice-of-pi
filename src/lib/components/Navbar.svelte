@@ -30,7 +30,7 @@
 </script>
 
 <header class="border-b border-border bg-background/75 backdrop-blur sticky top-0 z-20">
-	<div class="container px-8 max-w-7xl py-4">
+	<div class="container lg:gap-8 max-w-7xl px-4 lg:px-8 py-4">
 		<div class="flex h-[70px] items-center justify-between gap-3">
 			<div class="flex items-center gap-1.5">
 				<a href="/" class="rounded-md flex flex-row place-items-center gap-2" title="Visit home of a slice of pie">
